@@ -1,0 +1,2838 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Toolkit.Helpers</name>
+    </assembly>
+    <members>
+        <member name="T:Toolkit.Helpers.Assemblies">
+            <summary>
+            Clase con funcionalidades para interacturar con ensamblados
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Assemblies.LoadAssemblyFromPath(System.String,System.String,System.Boolean)">
+            <summary>
+            Funcion para cargar un ensamblado desde una ruta
+            </summary>
+            <param name="_assemblyName">Nombre del ensamblado a cargar dado por la clase 'System.Reflection.AssemblyName'</param>
+            <param name="_directoryPath">ruta al directorio donde se buscara el ensamblado a cargar</param>
+            <param name="recursive">Flag indicando si se buscara en subdirectorios de forma recursiva, por defecto es false</param>
+            <returns>Ensamblado cargado, null en caso de no poderse cargar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Assemblies.TryLoadAssemblyFromFile(System.String,System.String,System.Reflection.Assembly@)">
+            <summary>
+            Funcion para intentar cargar un ensamblado
+            </summary>
+            <param name="_file">Archivo que contiene el ensamblado</param>
+            <param name="_assemblyName">Nombre del ensamblado</param>
+            <param name="_assembly">Ensamblado cargado, null si no se ha podido cargar</param>
+            <returns>True si tiene existo, false en cualquier otro caso</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Configuration">
+            <summary>
+            Clase de ayuda para trabajar con el archivo de configuracion de la aplicacion
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Configuration.getAppSettings(System.String)">
+            <summary>
+            Funcion que obtiene el valor de una clave almacenada en el fichero de configuracion
+            </summary>
+            <param name="_key">Nombre de la clave solicitada</param>
+            <returns>Valor de la clave solicitada o vacio si no existe</returns>
+            <remarks>Si la clave no existe se registra el log</remarks>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.enumProvider">
+            <summary>
+            Enumeracion con los diferentes prooveedores de BBDD disponibles
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.enumProvider.NONE">
+            <summary>
+            Ningun proveedor de datos
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.enumProvider.SYSTEM_DATA_ODBC">
+            <summary>
+            Proveedor de BBDD para ODBC
+            NOTA: este probeedor no esta testeado actualmente, es posible que no funcione correctamente
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.enumProvider.SYSTEM_DATA_OLEDB">
+            <summary>
+            Proveedor de BBDD para OleDB
+            NOTA: este probeedor no esta testeado actualmente, es posible que no funcione correctamente
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.enumProvider.SYSTEM_DATA_ORACLECLIENT">
+            <summary>Proveedor de BBDD para Oracle</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.enumProvider.SYSTEM_DATA_SQLCLIENT">
+            <summary>Proveedor de BBDD para SQL Server</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.AdoProvider">
+            <summary>
+            Clase base para implementar objetos comunes de ADO (ActiveX Data Objects), para acceder a BBDD mediante ADO.NET
+            Esta clase mantiene los tipos de datos de acceso a BBDD comunes para poder acceder a diferentes BBDD
+            mediante el uso de la factoria existente en ADO.NET
+            Esta clase es abstracta, la implementacion de los metodos de consulta se debe realizar en las clases que hereden.
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.s_selectRegex">
+            <summary>Expresion regular para parsear una sentencia SELECT de SQL</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.s_whereRegex">
+            <summary>Expresion regular para parsear un filtro en pares clave/valor</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.m_adoProvider">
+            <summary>Variable con el objeto que contiene las factorias de proveedores</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.m_connection">
+            <summary>Variable con el objeto de conexion a BBDD</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.m_adapter">
+            <summary>Variable con un objeto adapter de acceso a datos</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.m_command">
+            <summary>Variable con el objeto para establecer comandos en el adapter</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.AdoProvider.m_paramDbToken">
+            <summary>variable para guardar el token usado para definir los parametros segun el proveedor</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.AdoProvider.#ctor(Toolkit.Helpers.Db.enumProvider,System.String)">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>
+            <param name="_provider">Proveedor de BBDD a usar</param>
+            <param name="_connString">Cadena de conexion contra la BBDD</param>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.AdoProvider.ConnectionString">
+            <summary>
+            Propiedad para obtener o establecer la cadena de conexion
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.AdoProvider.DbProvider">
+            <summary>
+            Propiedad para obtener el objeto que contiene las factorias de proveedores
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.AdoProvider.Connection">
+            <summary>
+            Propiedad para obtener el objeto de conexion a BBDD
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.AdoProvider.Adapter">
+            <summary>
+            Propiedad para obtener un objeto adapter de acceso a datos
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.AdoProvider.Command">
+            <summary>
+            Propiedad para obtener o establecer un objeto para establecer comandos en el adapter
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.AdoProvider.ParamDbToken">
+            <summary>
+            Propiedad para obtener guardar el token usado para definir los parametros segun el proveedor
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.AdoProvider.buildQuery(System.String[],System.String[],System.String[],System.String[])">
+            <summary>
+            Funcion para generar una consulta de BBDD con parametros.
+            </summary>
+            <param name="_selectColumns">array con los nombres columnas a seleccionar</param>
+            <param name="_queryTables">array con los nombres de tablas a consultar</param>
+            <param name="_joinPredicate">predicado de union, en el caso de tener varias tablas</param>
+            <param name="_predicate">predicado de condicion para obtener los registros. ej: "PRDCAMPOSDET_IDI.EMPCODIGO = '" + _empcodigo + "'"</param>
+            <returns>objeto KeyValuePair donde la clave es la consulta y Value son los parametros</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.AdoProvider.createDbParams(System.String[])">
+            <summary>
+            Funcion para crear parametros para el predicado de una sentencia SQL, las consultas mediante parametros son seguras ante inyeccion SQL
+            </summary>
+            <param name="_predicate">
+            Array con el predicado desde el cual seran generados los parametros. Ej: EMPCODIGO = '" + _empcodigo + "'" 
+            NOTA: el array sera modificado cno los parametros
+            </param>
+            <returns>Array con los parametros para añadir a un comando</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.Dao">
+            <summary>
+            Clase para implementar metodos de acceso a datos mediante objetos basicos de ADO.NET (DataReaders y DataSets)
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.Dao.m_provider">
+            <summary>
+            Variable con el proveedor de datos especifico de la toolkit
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.#ctor(Toolkit.Helpers.Db.enumProvider,System.String)">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>
+            <param name="_provider">Proveedor de BBDD a usar</param>
+            <param name="_connString">Cadena de conexion contra la BBDD</param>
+        </member>
+        <member name="P:Toolkit.Helpers.Db.Dao.Provider">
+            <summary>
+            Propiedad para obtener el proveedor de datos (de la toolkit) usado en el acceso a datos
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.select(System.String,System.Boolean,System.Nullable{System.Int32})">
+            <summary>
+            Funcion para ejecutar una consulta en la BBDD permitiendo parsearla para ejecutarla mediante comandos
+            </summary>
+            <param name="_query">Consulta SQL que sera ejecutada</param>
+            <param name="_parseQuery">
+            Flag indicando si la consulta sera parseada para ejecutar de forma segura mediante parametros para evitar inyeccion SQL.
+            Por defecto es true.
+            </param>
+            <param name="_timeout">Timeout para la ejecucion de la consulta (en segundos, si no se especifica sera por defecto el del framework '30 segundos')</param>
+            <returns>DataTable con los datos de la consulta</returns>
+            <remarks>
+            Actualmente la funcion de parseo esta en fase de ALFA y es posible que no funcione con todo tipo de consultas, si se desea
+            usar consultas complejas es posible que no funcione y se deba usar la consulta real con el problema de la seguridad permitiendo inyeccion SQL
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.select(System.String[],System.String[],System.String[],System.String[],System.Nullable{System.Int32})">
+            <summary>
+            Funcion para ejecutar una consulta de BBDD segura con parametros mediante los parametros de entrada
+            </summary>
+            <param name="_selectColumns">array con los nombres columnas a seleccionar</param>
+            <param name="_queryTables">array con los nombres de tablas a consultar</param>
+            <param name="_joinPredicate">predicado de union, en el caso de tener varias tablas</param>
+            <param name="_predicate">predicado de condicion para obtener los registros. Ej: "PRDCAMPOSDET_IDI.EMPCODIGO = '" + _empcodigo + "'"</param>
+            <param name="_timeout">(opcional) Timeout para la ejecucion de la consulta (en segundos, si no se especifica sera por defecto el del framework '30 segundos')</param>
+            <returns>DataTable con los datos de la consulta, null en caso de no poder realizarse</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.delete(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Funcion para borrar datos de una tabla de BBDD de forma NO segura, la consulta puede estar expuesta a inyeccion SQL
+            Para realizar la sentencia de forma segura mediante parametros usar el metodo sobrecargado '<see cref="!:delete(string,sting[],int?)"/>'
+            </summary>
+            <param name="_table">Tabla donde seran borrados los datos</param>
+            <param name="_predicate">predicado de condicion para borrar los datos. Ej: "PRDCAMPOSDET_IDI.EMPCODIGO = '" + _empcodigo + "' ... "</param>
+            <param name="_timeout">(opcional) Timeout para la ejecucion de la consulta (en segundos, si no se especifica sera por defecto el del framework '30 segundos')</param>
+            <returns>numero de filas afectadas en el borrado (-1 si ocurre algun error)</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.delete(System.String,System.String[],System.Nullable{System.Int32})">
+            <summary>
+            Funcion para borrar datos de una tabla de BBDD de forma segura mediante parametros
+            NOTA: OJO con los filtros, actualmente son pasados como cadenas en formato (CODIGO = '35') debe tenerse en cuenta al trabajar con rangos.
+            </summary>
+            <param name="_table">Tabla donde seran borrados los datos</param>
+            <param name="_predicate">predicado de condicion para borrar los datos. Ej: "PRDCAMPOSDET_IDI.EMPCODIGO = '" + _empcodigo + "'"</param>
+            <param name="_timeout">(opcional) Timeout para la ejecucion de la consulta (en segundos, si no se especifica sera por defecto el del framework '30 segundos')</param>
+            <returns>numero de filas afectadas en el borrado (-1 si ocurre algun error)</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.executeCommand(System.Data.Common.DbCommand)">
+            <summary>
+            Funcion para ejecutar un comando en la BBDD
+            </summary>
+            <param name="_command">Comando a ejecutar</param>
+            <returns>DataTable con los datos del resultado del comando</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.Dao.executeCommandNonQuery(System.Data.Common.DbCommand)">
+            <summary>
+            Funcion para ejecutar un comando en la BBDD sin valor de retorno (insert, update y delete)
+            </summary>
+            <param name="_command">Comando a ejecutar</param>
+            <returns>
+            En INSERT, UPDATE y DELETE retorna el numero de filas afectadas, para cualquier otra sentencia el valor es -1 
+            (Si ocurre un error o un rollback tambien se retorna -1)
+            </returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.StatementGenerator">
+            <summary>
+            Clase implementando una logica para generacion de sentencias SQL
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.StatementGenerator.#ctor(Toolkit.Helpers.Db.enumProvider,System.String)">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>  
+            <param name="_provider">Proveedor de BBDD para las operaciones</param>
+            <param name="_connString">Cadena de conexion contra la BBDD</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.StatementGenerator.dynamicInsertFromSelect(System.String,System.Boolean)">
+            <summary>
+            Funcion para generar sentencias inserts desde los resultados de una consulta Select en una BBDD.
+            la consulta en la BBDD se ejecuta de forma NO segura
+            </summary>
+            <param name="_select">consulta para generar el insert dinamico</param>
+            <param name="_includeImages">
+            Flag indicando si seran incluidas las imagenes en la consulta (por defecto = true)
+            NOTA: en imagenes grandes es posible que se trunque la select quedando inservible, de modo que si se establece en false, se establecera null y debera añadirse la imagen de forma manual
+            </param>
+            <returns>Cadena con el insert dinamico, null en caso de no poder generarse</returns>
+            <remarks>
+            Al ejecutarse la consulta directamente se ve comprometida la seguridad por inyeccion SQL, este metodo debe usarse con precaucion
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.StatementGenerator.generateDynamicInsert(System.Data.DataTable,System.String,System.Boolean)">
+            <summary>
+            Funcion para generar un insert dinamico para los resultados de una tabla 
+            NOTA: insert dinamico se refiere a una consulta que genera inserts
+            </summary>
+            <example>
+            
+                  select 'INSERT INTO [GEN_DESA].[dbo].[PRDCAMPOS_IDI]
+                    ([EMPCODIGO]
+                    ,[APLICODIGO]
+                    ,[TIPO]
+                    ,[CAMCODIGO]
+                    ,[IDICODIGO]
+                    ,[CAMNOMBRE]
+                    ,[CAMPESTANYA]
+                    ,[DISPOSITIVO])
+                VALUES
+                    (
+                    '
+                    '' + EMPCODIGO + '''' +
+                    ',''' + APLICODIGO + '''' +
+                    ',''' + TIPO + '''' +
+                    ',' + isnull('''' + CAMCODIGO + '''', 'null') +
+                    ',' + isnull('''' + IDICODIGO + '''', 'null') +
+                    ',' + isnull('''' + CAMNOMBRE + '''', 'null') +
+                    ',' + isnull('''' + CAMPESTANYA + '''', 'null') +            
+                    ',' + isnull(cast(DISPOSITIVO as varchar), 'null') + 
+                    ')' 
+                 from [GEN_DESA].[dbo].[PRDCAMPOS_IDI]
+                 WHERE     (EMPCODIGO = '0011') AND (APLICODIGO = 'LGE') AND (TIPO = 'L') AND (CAMCODIGO = 'p_pae_code')
+            
+            </example>
+            <param name="_table">tabla con los resultados para la generacion</param>
+            <param name="_query">consulta original mediante la cual se ha obtenido la tabla con los datos</param>
+            <param name="_includeImages">
+            Flag indicando si seran incluidas las imagenes en la consulta (por defecto = true)
+            NOTA: en imagenes grandes es posible que se trunque la select quedando inservible, de modo que si se establece en false, se establecera null y debera añadirse la imagen de forma manual
+            </param>
+            <returns>cadena con el insert dinamico que al ejecutarse en una BBDD se generaran los inserts reales, null en caso de no poderse generar</returns>
+            <remarks>Actualmente SOLO genera la consulta para SQL server, falta implemetnar otras BBDD</remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.StatementGenerator._formatValues(System.Data.DataColumn,System.Boolean)">
+            <summary>
+            Funcion para formatear los valores de una consulta dinamica
+            NOTA: consulta dinamica se refiere a una consulta que genera otra consulta
+            </summary>
+            <param name="_column">Columna de la tabla que sera usada para formatear su valor en la consulta dinamica</param>
+            <param name="_includeImages">
+            Flag indicando si seran incluidas las imagenes en la consulta (por defecto = true)
+            NOTA: en imagenes grandes es posible que se trunque la select quedando inservible, de modo que si se establece en false, se establecera null y debera añadirse la imagen de forma manual
+            </param>
+            <returns></returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.TypeConverterHelper">
+            <summary>
+            Clase para convertir entre tipos de datos .NET, DBType y SqlDbType
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.TypeConverterHelper.m_dbTypeList">
+            <summary>Array para guardar todos los tipos de datos</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.TypeConverterHelper.DbTypeMapEntry">
+            <summary>
+            Estructura privada para guardar el mapeo entre tipos
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.TypeConverterHelper.DbTypeMapEntry.Type">
+            <summary>Variable para guardar un tipo de datos .NET</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.TypeConverterHelper.DbTypeMapEntry.DbType">
+            <summary>Variable para guardar un tipo de datos de un proveedor de datos de .NET Framework comun</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Db.TypeConverterHelper.DbTypeMapEntry.SqlDbType">
+            <summary>Variable para guardar un tipo de datos para un proveedor de datos de SQL server</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.DbTypeMapEntry.#ctor(System.Type,System.Data.DbType,System.Data.SqlDbType)">
+            <summary>
+            Constructor por defecto de la estructura
+            </summary>
+            <param name="_type">tipo de datos de .NET</param>
+            <param name="_dbType">tipo de datos de un proveedor de datos de .NET Framework comun</param>
+            <param name="_sqlDbType">tipo de datos para un proveedor de datos de SQL server</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.#cctor">
+            <summary>
+            Constructor por defecto estatico de la clase.
+            Mediante este constructor se inicializan todos los mapeos entre tipos la primera vez que se use una conversion
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.#ctor">
+            <summary>
+            Constructor de la clase privado para no poder crear instancias
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.ToNetType(System.Data.DbType)">
+            <summary>
+            Obtener equivalencia de un tipo DbType a un tipo .NET
+            </summary>
+            <param name="_dbType">tipo DbType</param>
+            <returns>tipo .NET equivalente</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.ToNetType(System.Data.SqlDbType)">
+            <summary>
+            Obtener equivalencia de un tipo SqlDbType a un tipo .NET
+            </summary>
+            <param name="_sqlDbType">tipo SqlDbType</param>
+            <returns>tipo .NET equivalente</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.ToDbType(System.Type)">
+            <summary>
+            Obtener equivalencia de un tipo .NET a un tipo DbType
+            </summary>
+            <param name="_type">tipo .NET</param>
+            <returns>tipo DbType equivalente</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.ToDbType(System.Data.SqlDbType)">
+            <summary>
+            Obtener equivalencia de un tipo SqlDbType a un tipo DbType
+            </summary>
+            <param name="_sqlDbType">tipo SqlDbType</param>
+            <returns>tipo DbType equivalente</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.ToSqlDbType(System.Type)">
+            <summary>
+            Obtener equivalencia de un tipo .NET a un tipo SqlDbType
+            </summary>
+            <param name="_type">tipo .NET</param>
+            <returns>tipo SqlDbType equivalente</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.TypeConverterHelper.ToSqlDbType(System.Data.DbType)">
+            <summary>
+            Obtener equivalencia de un tipo DbType a un tipo SqlDbType
+            </summary>
+            <param name="_dbType">tipo DbType</param>
+            <returns>tipo SqlDbType equivalente</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Db.EntityFramework">
+            <summary>
+            Clase con funciones de ayuda en operaciones con entityframework
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Db.EntityFramework.DynamicSqlQuery(System.Data.Entity.DbContext,System.String,System.String,System.Object[])">
+            <summary>
+            Funcion para crear una consulta dinamica sobre entityframework.
+            </summary>
+            <param name="_dbContext">Contexto de base de datos de entityframework a usar</param>
+            <param name="_sql">Consulta SQL a ejecutar mediante entityframework</param>
+            <param name="_parameterContant">Constante usada para los parametros ej: 'p__linq__', 'p', etc.</param>
+            <param name="_parameters">Parametros a usar en la consulta, deberan estar en formato @0, @1, ... </param>
+            <returns>Enumeracion de modelos del tipo dinamico creado mediante las columnas de seleccion de la consulta</returns>
+            <remarks>El nombre de las columnas debera ser un nombre que pueda establecerse como propiedad en un tipo .net</remarks>
+        </member>
+        <member name="T:Toolkit.Helpers.Disposable">
+            <summary>
+            Clase para implementar la interface IDisposable para permitir eliminar objetos en .NET
+            Cualquier clase que necesite eliminar recursos puede heredar de aqui.
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Disposable.m_disposed">
+            <summary>
+            Flag indicando si ha sido llamado el metodo de eliminacion Dispose
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Disposable.IsDisposed">
+            <summary>
+            Propiedad para obtener un valor indicando si se ha eliminado o no el objeto
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Disposable.#ctor">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Disposable.Finalize">
+            <summary>
+            Destructor de la clase
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Disposable.Dispose">
+            <summary>
+            Funcion de la interface IDisposable que es invocada cuando un objeto esta siendo eliminado
+            por el garbage collector o por el usuario explicitamente para liberar recursos
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Disposable.Dispose(System.Boolean)">
+             <summary>
+             Las clases hijas pueden sobreescribir este metodo para realizar una logica de limpieza de recursos,
+             como por ejemplo eliminar manejadores de eventos o recursos no manejados
+             </summary>
+             <param name="_disposing">
+             Si el flag es true, el metodo esta siendo llamado por un codigo de usuario y
+             se deben limpiar recursos manejados y no manejados.
+             Si el flag es false, el metodo esta siendo llamado por el runtime desde dentro del finalizador y no se deberia
+             tener referencia a otros objetos, donde solo pueden ser eliminados recursos no manejados
+             </param>
+             <example>
+             Ejemplo de funcion sobreescrita en una clase que herede:
+             protected override void Dispose(bool _disposing)
+             {
+                // verificar si ya ha sido llamada la funcion
+                if(!this.IsDisposed)
+                {
+                   try
+                   {
+                       // eliminar recursos manejados
+                       if(_disposing)
+                       {
+                            // desasociar todos los objetos asociados, hacer esto manualmente para evitar llamar a _needUpdate()
+                            // que puede fallar por que hay items eliminados
+                            foreach (var entity in this.m_entitys) entity.Value._notifyDettached();
+                            // vaciar el array con los objetos asociados
+                            this.m_entitys.Clear();
+                        }
+            
+                        // eliminar recursos no manejados
+                        // .... (no necesario)
+                    }
+                    finally
+                    {
+                        // llamar al metodo Dispose de la clase base
+                        base.Dispose(_disposing);
+                    }
+                 }   
+             }
+             </example>
+        </member>
+        <member name="T:Toolkit.Helpers.DynamicCompiler">
+             <summary>
+             Este archivo contiene una clase para facilitar la ejecucion y compilacion de funciones
+             .net en tiempo de ejecucion.
+             Para ello, se configura y crea una clase sobre la cual se podran insertar
+             Funciones de codigo, la clase puede ser compilada en un ensamblado en memoria o disco y
+             se podra ejecutar cualquier funcion insertada    
+             NOTA: actualmente, no se permite la sobrecarga de funciones, esto quiere decir que no pueden
+             existir 2 funciones con el mismo nombre.
+             NOTA2: es muy recomendable invocar el metodo dispose cuando no se quiera usar mas el codigo compilado para eliminar el dominio de aplicacion creado
+             </summary>
+             <example>
+                                 
+                         // Inicializar el compilador dinamico
+                         using(DynamicCompiler compiler = new DynamicCompiler())
+                         {
+                             // Obtener la cadena de la funcion existente en el archivo script, (OJO, las codificaciones de archivos c#
+                             // es UTF8, con lo que se obtiene el script en UTF8, Visual Studio guarda los archivos c# con esta codificacion)
+                             string code = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(directorioplantillas + _plantilla + ".script"));
+                             // Eliminar el BOM (Byte-order-mask). Caracter con codigo unicode (U+FEFF) del archivo UTF-8
+                             if (code[0] == 0xfeff) code.Remove(0, 1);
+                             
+                             // añadir using para usar diccionarios en el codigo a compilar
+                             compiler.AddNamespace("System.Collections.Generic");
+                             // insertar la funcion obtenida del script
+                             compiler.addMethod("function_1", code);
+                             // crear un dominio de aplicacion diferente (para no perder memoria en el servidor)
+                             compiler.CreateAppDomain("Temp_Domain");
+                             // establecer la ruta donde residen los ensamblados referenciados (directorio bin del web)
+                             compiler.SupportAssemblyPath = AppDomain.CurrentDomain.RelativeSearchPath + "\\";
+                             // especificar donde sera guardado temporalmente el ensamblado compilado (directorio de plantillas)
+                             compiler.OutAssembly = directorioplantillas + _plantilla + ".dll";
+            
+                             // compilar el codigo
+                             compiler.compileAssembly();
+                             // si existe algun error de compilacion, se indica.
+                             if (!string.IsNullOrEmpty(compiler.ErrorMsg))
+                                 throw new Exception("error al compilar el script del documento \n\n" + compiler.ErrorMsg);
+            
+                             // llamar a la funcion 
+                             keysValues = (Dictionary&lt;string, string&gt;)compiler.CallMethod("replaceMergeFields", keysValues);
+                             if (null == keysValues)
+                                 throw new Exception("error al compilar el script del documento \n\n" + compiler.ErrorMsg);
+                         }
+             </example>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_disposed">
+            <summary>Flag indicando si ha sido llamado el metodo de eliminacion Dispose</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_compiler">
+            <summary>Proveedor del compilador usado para compilar el codigo</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_parameters">
+            <summary>Referencia a los parametros del objeto compilador</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_assembly">
+            <summary>
+            Referencia al ensamblado resultante de la compilacion
+            (Solo para ensamblados que se compilen en memoria sobre la aplicacion principal)
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_compilerResults">
+            <summary>Objeto para mostrar los resultados de la compilacion</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_isCompiled">
+            <summary>Flag para indicar si la clase ha sido compilada</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_outAssembly">
+            <summary>
+            ruta y nombre del ensamblado de salida (si es especificado, se creara el ensamblado 
+            temporal en disco con este nombre)        
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_namespaces">
+            <summary>cadena con los namespaces del codigo a compilar</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_objRef">
+            <summary>
+            La referencia a la instancia de la clase compilada. este es el objeto de la clase
+            que ha sido compilada, mediante el cual se puede llamar a cualquier funcion
+            que haya sido compilada dentro de la clase.
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_sourceCode">
+            <summary>
+            Contiene el codigo fuente de la clase entera compilada.
+            NOTA: Este valor solo estara disponible una vez compilada la clase
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_methods">
+            <summary>
+            lista enlazada simple para guardar los metodos que se insertaran en la clase a compilar
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_assemblyNamespace">
+            <summary>
+            Namespace de la clase que se va a crear.
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_className">
+            <summary>Nombre de la clase a crear.</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_defaultAssemblies">
+            <summary>        
+            Determina si los ensamblados por defecto son añadidos. (System, System.IO, System.Reflection)
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_appDomain">
+            <summary>
+            Dominio de aplicacion para ejecutar el ensamblado en otro dominio
+            Esto permite que se pueda eliminar una vez finalizada su ejecucion
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_errorMsg">
+            <summary>cadena para contener el posible mensaje de error</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_error">
+            <summary>Flag que indica si existe un error</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_supportAssemblyPath">
+            <summary>       	
+            Ruta de acceso para los ensamblados referenciados.
+            Por defecto esta en blanco (directorio de ejecucion), pero si se usa esta funcionalidad
+            en ASP.Net, se debe especificar la ruta bin explícitamente. incluyendo guion final        
+            </summary>        
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_scriptingLanguage">
+            <summary>Inicialmente el lenguaje a usar es c#</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.DynamicCompiler.enumLanguages">
+            <summary>Enumeracion con los lenguajes .net posibles para la compilacion</summary>                
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.enumLanguages.CSharp">
+            <summary>lenguaje c#</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.enumLanguages.VB">
+            <summary>lenguaje VB</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.DynamicCompiler.enumCompilerVersions">
+            <summary>Enumeracion con las versiones de framework para la compilacion</summary>                
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.enumCompilerVersions.v3_5">
+            <summary>version 3.5 del framework</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.enumCompilerVersions.v4_0">
+            <summary>version 4.0 del framework</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.m_interfaceMethod">
+            <summary>
+            Implementacion del metodo de la interface 'IRemoteInterface' que es usado y añadido
+            en la clase cuando se compila el ensamblado en un dominio remoto/independiente
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.IsDisposed">
+            <summary>
+            Propiedad para obtener un valor indicando si se ha eliminado o no el objeto
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.Languaje">
+            <summary>
+            Propiedad para obtener o establecer el lenguaje que sera usado para la 
+            compilacion. 
+            </summary>        
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.CompilerVersion">
+            <summary>
+            Propiedad para obtener la version del framework usada para la compilacion
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.SourceCode">
+            <summary>
+            Propiedad para obtener el codigo fuente completo que se ha compilado.         
+            NOTA: Este valor solo estara disponible una vez compilada la clase
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.ErrorMsg">
+            <summary>
+            Propiedad para obtener el mensaje de error si existe, o null en caso de no existir error
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.DefaultAssemblies">
+            <summary>
+            Propiedad para establecer si se insertan referencias a ensamblados por defecto
+            para la clase a compilar. Por defecto es True
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.OutAssembly">
+            <summary>
+            Propiedad para establecer u obtener una ruta y nombre.dll para el ensamblado de salida.
+            NOTA: Si se especifica esta propiedad, el ensamblado se guardara en disco
+            pero es borrado al finalizar esta instancia o al llamar al metodo Dispose().
+            En ASP.net es requerido, para especificar un directorio con permisos de escritura,
+            si no, se utilizara el directorio temporal creado por el framework y dara error de permisos.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.AssemblyNamespace">
+            <summary>
+            Propiedad para establecer u obtener el nombre de espacio para el 
+            ensamblado y la clase a compilar        
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.ClassName">
+            <summary>
+            Propiedad para establecer u obtener el nombre de la clase a compilar      
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.SupportAssemblyPath">
+            <summary>       	
+            Propiedad para establecer u obtener la ruta de acceso para los ensamblados referenciados en el codigo.
+            Por defecto esta en blanco (directorio de ejecucion), pero si se usa esta funcionalidad
+            en ASP.Net, se debe especificar la ruta bin explícitamente. incluyendo guion final        
+            </summary>     
+        </member>
+        <member name="P:Toolkit.Helpers.DynamicCompiler.IsCompiled">
+            <summary>       	
+            Propiedad para obtener el flag indicando si la clase ha sido compilada      
+            </summary>     
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.#ctor">
+            <summary>
+            Constructor por defecto de la clase que usa como lenguaje de compilacion 'c#' y version del framework 3.5       
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.#ctor(Toolkit.Helpers.DynamicCompiler.enumLanguages,Toolkit.Helpers.DynamicCompiler.enumCompilerVersions)">
+            <summary>
+            Constructor sobrecargado de la clase para especificar un lenguaje de compilacion.        
+            </summary>
+            <param name="_language">
+            lenguaje a usar por el codigo a compilar dado por la enumeracion 'm_enumLanguages'      
+            </param>
+            <param name="_compilerVersion">
+            version del framework usada para la compilacion
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.Finalize">
+            <summary>
+            Destructor por defecto de la clase
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.Dispose">
+            <summary>
+            Funcion de la interface IDisposable que es invocada cuando un objeto esta siendo eliminado
+            por el garbage collector o por el usuario explicitamente para liberar recursos
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.Dispose(System.Boolean)">
+             <summary>
+             Las clases hijas pueden sobreescribir este metodo para realizar una logica de limpieza de recursos,
+             como por ejemplo eliminar manejadores de eventos o recursos no manejados
+             </summary>
+             <param name="_disposing">
+             Si el flag es true, el metodo esta siendo llamado por un codigo de usuario y
+             se deben limpiar recursos manejados y no manejados.
+             Si el flag es false, el metodo esta siendo llamado por el runtime desde dentro del finalizador y no se deberia
+             tener referencia a otros objetos, donde solo pueden ser eliminados recursos no manejados
+             </param>
+             <example>
+             Ejemplo de funcion sobreescrita en una clase que herede:
+             protected override void Dispose(bool _disposing)
+             {
+                // verificar si ya ha sido llamada la funcion
+                if(!this.IsDisposed)
+                {
+                   try
+                   {
+                       // eliminar recursos manejados
+                       if(_disposing)
+                       {
+                            // desasociar todos los objetos asociados, hacer esto manualmente para evitar llamar a _needUpdate()
+                            // que puede fallar por que hay items eliminados
+                            foreach (var entity in this.m_entitys) entity.Value._notifyDettached();
+                            // vaciar el array con los objetos asociados
+                            this.m_entitys.Clear();
+                        }
+            
+                        // eliminar recursos no manejados
+                        // .... (no necesario)
+                    }
+                    finally
+                    {
+                        // llamar al metodo Dispose de la clase base
+                        base.Dispose(_disposing);
+                    }
+                 }   
+             }
+             </example>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.initParams(Toolkit.Helpers.DynamicCompiler.enumLanguages,Toolkit.Helpers.DynamicCompiler.enumCompilerVersions)">
+            <summary>
+            Funcion para establecer los parametros inicialies por defecto de la clase.        
+            </summary>
+            <param name="_language">
+            lenguaje a usar por el codigo a compilar dado por la enumeracion 'm_enumLanguages'      
+            </param>        
+            <param name="_compilerVersion">
+            Version del framework usada para la compilacion
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.UnloadAppDomain">
+            <summary>
+            Funcion para liberar y borrar el ensamblado compilado por la clase
+            NOTA: solo se puede liberar si esta sobre un dominio de aplicacion
+            diferente al principal.
+            </summary>
+            <returns>True si ha tenido exito, false en cualquier otro caso</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.CreateInstance">
+            <summary>
+            Crear u obtener la instancia del objeto compilado.
+            </summary>
+            <returns>intancia al objeto compilado o null en caso de error</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.AddDefaultAssemblies">
+            <summary>
+            Funcion para añadir ensamblados por defecto para la clase a compilar
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.generateClass">
+            <summary>
+            funcion para generar el codigo fuente completo de la clase para compilar
+            </summary>
+            <returns>
+            Codigo fuente listo para compilar, null en caso de error o que el ensamblado
+            ya esta compilado
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.addMethod(System.String,System.String)">
+            <summary>
+            Añadir una funcion a la clase a compilar
+            </summary>
+            <param name="_key">clave para identificar el metodo dentro de la lista de metodos</param>
+            <param name="_code">Codigo de la funcion</param>        
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.removeMethod(System.String)">
+            <summary>
+            Borrar una funcion de la clase a compilar
+            </summary>
+            <param name="_name">Nombre de la funcion</param>
+            <returns>True si tiene exito, false en caso contrario</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.containsMethod(System.String)">
+            <summary>
+            Comprobar si el nombre de una funcion ya existe en la clase a compilar
+            </summary>
+            <param name="_name">Nombre de la funcion a comprobar</param>
+            <returns>True si existe, false en caso contrario</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.compileAssembly">
+            <summary>		
+            Funcion para compilar la clase en un ensamblado para ser
+            cargado y ejecutado posteriormente
+            </summary>        
+            <returns>true si ha tenido exito al compilar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.clearRefAssemblys">
+            <summary>
+            Funcion para limpiar todas las referencias a ensamblados DLL
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.clearRefNamespaces">
+            <summary>
+            Funcion para limpiar todas las referencias a las directivas de namespaces en el codigo
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.AddAssembly(System.String)">
+            <summary>		
+            Funcion para añadir un ensamblado al codigo a compilar
+            </summary>
+            <param name="_assemblyDll">Nombre del ensamblado DLL</param>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.AddNamespace(System.String)">
+            <summary>
+            Funcion para añadir un namespace al codigo a compilar
+            </summary>
+            <param name="_namespace">Namespace que se desea insertar en las directivas using/import</param>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.AddAssembly(System.String,System.String)">
+            <summary>		
+            Funcion para añadir un ensamblado y/o namespace al codigo a compilar.    
+            </summary>
+            <param name="_assemblyDll">
+            Nombre del ensamblado DLL o null si no se quiere añadir ensamblado
+            </param>
+            <param name="_namespace">
+            Namespace a incluir en el codigo o null si no se quiere añadir namespace
+            </param>        
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.CallMethod(System.String,System.Object[])">
+            <summary>
+            Funcion para ejecutar un metodo de un enamblado compilado.
+            </summary>        
+            <param name="_method">metodo o funcion a ejecutar</param>
+            <param name="_params">Parametros del metodo o funcion a ejecutar</param>
+            <returns>
+            Retorna el objeto devuelto por la funcion a ejecutar. Null en caso de no 
+            tener exito al invocar la funcion o el ensamblado no esta aun compilado.
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.CreateAppDomain(System.String)">
+            <summary>
+            Crear un dominio de aplicacion remoto/independiente para ejecutar
+            la clase en un dominio independiente de la aplicacion principal        
+            </summary>
+            <param name="_appDomain">Nombre del dominio remoto/independiente a crear</param>
+            <returns>retornar true si tiene exito, false en cualquier otro caso</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.DynamicCompiler.IRemoteInterface">
+            <summary>    
+            Interface expuesta para ejecutar codigo de un dominio remoto/independiente
+            </summary>        
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.IRemoteInterface.Invoke(System.String,System.Object[])">
+            <summary>
+            declaracion de la funcion de la interface para invocar
+            </summary>
+            <param name="_method">Cadena con el nombre del metodo a invocar</param>
+            <param name="_params">array de parametros para el metodo a invocar</param>
+            <returns>Objeto con el resultado de la llamada al metodo</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.DynamicCompiler.RemoteLoaderFactory">
+            <summary>    
+            Clase que basada en el patron 'FactoryMethod' para la creacion de objetos locales o remotos
+            que expongan la interface 'IRemoteInterface'
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.DynamicCompiler.RemoteLoaderFactory.bfi">
+            <summary>flags que afectan a la busqueda de un contructor en una clase</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.DynamicCompiler.RemoteLoaderFactory.Create(System.String,System.String,System.Object[])">
+            <summary>
+            Metodo de la factoria para crear una instancia de un tipo con el nombre especificado mediante
+            los parametros de entrada
+            </summary>
+            <param name="assemblyFile">        
+            El nombre de un archivo de tipo ensamblado donde se encuentra la clase a instanciar
+            </param>
+            <param name="typeName">Nombre del tipo a instanciar (completo, con namespace.type)</param>
+            <param name="constructArgs">
+            Un array de argumentos que  coinciden en numero, orden y tipo de parametros de el constructor a invocar.
+            o null para el constructor por defecto        
+            </param>
+            <returns>El valor de retorno es el objeto creado representado como 'IRemoteInterface'</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Enums`1">
+            <summary>
+            Clase con funcionalidades para trabajar con enumeraciones
+            </summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Images.Converters">
+            <summary>
+            Clase con helpers para conversiones de imagenes
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Images.Converters.GetImage(System.Byte[])">
+            <summary>
+            metodo extensor para convertir un array de bytes en una imagen
+            </summary>
+            <param name="_image">Array de bytes con la imagen</param>
+            <returns>Imagen formada desde el array de bytes, null en caso de no poderse convertir</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Images.Converters.GetByteArray(System.Drawing.Image,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Metodo extensor para converir una imagen en un array de bytes
+            </summary>
+            <param name="_image">imagen para obtener los bytes</param>
+            <param name="_format">Formato de la imagen a obtener</param>
+            <returns>array de bytes con la imagen en el formato especificado, null si no se puede convertir</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Images.Thumbnail">
+            <summary>
+            Clase con helpers para ayudar en la creacion de thumbnails de imagenes
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Images.Thumbnail.generateThumbnail(System.Byte[],System.Int32,System.Boolean,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            metodo extensor para generar una imagen miniatura desde una imagen
+            </summary>
+            <param name="_image">Imagen de la cual sera generada la miniatura</param>
+            <param name="_size">tamaño de la miniatura</param>
+            <param name="_keepAspectRatio">flag indicando si se mantiene el aspect ratio (proporcion original)</param>
+            <param name="_format">Formato de la imagen a obtener</param>
+            <returns>Imagen con la miniatrura</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Images.Thumbnail.generateThumbnail(System.Drawing.Image,System.Int32,System.Boolean)">
+            <summary>
+            metodo extensor para generar una imagen miniatura desde una imagen
+            </summary>        
+            <param name="_image">Imagen de la cual sera generada la miniatura</param>
+            <param name="_size">tamaño de la miniatura</param>
+            <param name="_keepAspectRatio">flag indicando si se mantiene el aspect ratio (proporcion original)</param>
+            <returns>Imagen con la miniatrura</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Linq">
+            <summary>
+            Clase con metodos extensores de linq personalizados para trabajar con colecciones de objetos
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Linq.groupConsecutive(System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            Metodo extensor para agrupar numeros consecutivos.
+            NOTA: requiere una lista ordenada ascendentemente de numeros
+            </summary>
+            <param name="_list">lista de numeros ordenada ascendentemente</param>
+            <returns>Enumeracion de grupos de numeros consecutivos</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Linq.DistinctBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Método extensor para realizar una distinción por una propiedad en concreto del objeto
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TKey"></typeparam>
+            <param name="source"></param>
+            <param name="keySelector"></param>
+            <returns>Lista en la que se eliminan los objetos repetidos, donde sólo se tiene en cuenta la propiedad indicada</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.RegularExpressions">
+            <summary>
+            Clase con funcionalidades para interacturar con expresiones regulares
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.KEY_VALUE_PAIR_REGEX">
+            <summary>Expresion regular para obtener pares clave/valor</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.IP_ADDR_REGEX">
+            <summary>Expresion regular para validar direcciones IP</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.MAC_ADDR_REGEX">
+            <summary>Expresion regular para validar direcciones MAC</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.DOMAIN_NAME_REGEX">
+            <summary>Expresion regular para validar nombres de dominio</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.WIN_VALID_FILENAME_REGEX">
+            <summary>Expresion regular para validar nombres validos de archivos en Windows</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.WIN_INVALID_FILENAME_CHARS_REGEX">
+            <summary>Expresion regular para validar caracteres invalidos en archivos de Windows</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.FLOAT_REGEX">
+            <summary>Expresion regular para validar numeros flotantes</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.ROMAN_NUMBER_REGEX">
+            <summary>Expresion regular para validar numeros romanos</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.DATE_FORMAT_yyyyMMdd_REGEX">
+            <summary>Expresion regular para validar formatos de fecha yyyy-MM-dd</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.MULTIPLE_SPACE_REGEX">
+            <summary>Expresion regular para validar multiples espacios consecutivos</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.LATITUDE_REGEX">
+            <summary>Expresion regular para validar la latitud de una posicion GPS</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.LONGITUDE_REGEX">
+            <summary>Expresion regular para validar la longitud de una posicion GPS</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.HTML_SCRIPT_REGEX">
+            <summary>Expresion regular para obtener el contenido de un script</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.RegularExpressions.HTML_IFRAME_REGEX">
+            <summary>Expresion regular para obtener el contenido de un iframe</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Security.HashCrypto">
+            <summary>
+            Clase con funcionalidades de encriptacion basadas en funciones criptograficas HASH
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.HashCrypto.encodeSHA1(System.Byte[])">
+            <summary>
+            Funcion para encriptar un array de bytes con el algoritmo HASH SHA-1
+            </summary>
+            <param name="_data">Arary de bytes a codificar con la funcion HASH SHA1</param>
+            <returns>array de datos codificados con la funcion HASH SHA1, null en caso de error</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.HashCrypto.encodeSHA1(System.String,System.Text.Encoding)">
+            <summary>
+            Funcion para encriptar una cadena con el algoritmo HASH SHA-1
+            </summary>
+            <param name="_data">cadena a codificar con la funcion HASH SHA1</param>
+            <param name="_encoding">Codificacion usada en la cadena de entrada para la conversion a bytes</param>
+            <returns>cadena con los caracteres en hexadecimal de los datos codificados con la funcion HASH SHA1, null en caso de error</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.HashCrypto.encodeMD5(System.Byte[])">
+            <summary>
+            Funcion para encriptar un array de bytes con el algoritmo HASH MD5
+            </summary>
+            <param name="_data">Arary de bytes a codificar con la funcion HASH MD5</param>
+            <returns>array de datos codificados con la funcion HASH MD5, null en caso de errror</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.HashCrypto.encodeMD5(System.String,System.Text.Encoding)">
+            <summary>
+            Funcion para encriptar una cadena con el algoritmo HASH MD5
+            </summary>
+            <param name="_data">cadena a codificar con la funcion HASH MD5</param>
+            <param name="_encoding">Codificacion usada en la cadena de entrada para la conversion a bytes</param>
+            <returns>cadena con los caracteres en hexadecimal de los datos codificados con la funcion HASH MD5, null en caso de error</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Security.WindowsImpersonate">
+            <summary>
+            Esta clase se programa con la finalidad de poder realizar una suplantacion (impersonate)
+            personalizada y controlada en cualquier aplicacion que use el nucleo de GFA.
+            
+            Generalmente se usa mediante la funcion 'executeFunction' que encapsula la suplantacion.
+            Para personalizar mas el ambito puede usarse mediante la directiva 'using', ej:
+            
+                using (Toolkit.Helpers.Security.WindowsImpersonate wi = new Toolkit.Helpers.Security.WindowsImpersonate())
+                {
+                    if(!wi.impersonate("appproject", "AddingTechnology.local", "AppAdding") return;
+            
+                    // CODIGO con el usuario suplantado
+                    // ...
+                }
+            
+            NOTA: el uso abusivo de esta clase es peligroso por motivos de seguridad, al poder ejecutar
+            codigo con un usuario de privilegios elevados.
+            Debe usarse con precaucion.
+            
+            NOTA: Para poder hacer uso de esta clase, el archivo webconfig debe tener el tag
+            '&lt;identity impersonate="true"/&gt;'
+            </summary>    
+            <remarks>
+            el uso abusivo de esta clase es peligroso por motivos de seguridad, al poder ejecutar
+            codigo con un usuario de privilegios elevados.
+            Debe usarse con precaucion.
+            </remarks>
+        </member>
+        <member name="F:Toolkit.Helpers.Security.WindowsImpersonate.m_lnToken">
+            <summary>Puntero al token del usuario a suplantar</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Security.WindowsImpersonate.m_impersonatedUser">
+            <summary>contexto del usuario de window para operaciones de suplantacion</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Security.WindowsImpersonate.LOGON32_PROVIDER_DEFAULT">
+            <summary>Constantes de la API WIN32 para la funcion LogonUser</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.LogonUser(System.String,System.String,System.String,System.Int32,System.Int32,System.IntPtr@)">
+            <summary>
+            Funcion del API WIN32 para intentar loguear a un usuario en la computadora local.
+            No se puede usar esta funcion para loguear en un sistema remoto.
+            Para loguearse se especifica el nombre de usuario, dominio y la contraseña en texto plano.
+            Si tiene exito, se recive un identificador al simbolo que representa el usuario logueado.
+            Se puede usar este identificador de simbolo para suplantar al usuario, o en la mayoria
+            de los casos para crear un proceso que corra en el contexto del usuario especificado.        
+            </summary>        
+            <param name="_lpszUsername">	
+            Un puntero a una cadena terminada en nulo que especifica el nombre del usuario.
+            Este es el nombre de la cuenta de usuario para iniciar sesión.
+            Si utiliza el nombre de usuario principal (UPN), usuario @ DNSDomainName, 
+            el parámetro lpszDomain debe ser NULL.  
+            </param>
+            <param name="_lpszDomain">
+            Un puntero a una cadena terminada en nulo que especifica el nombre del dominio o servidor
+            cuya cuenta de base de datos contiene la cuenta de lpszUsername.
+            Si este parámetro es NULL, el nombre de usuario debe especificarse en formato UPN.
+            Si este parámetro es ".", La función valida la cuenta usando solamente la base de datos
+            de cuentas locales.
+            </param>
+            <param name="_lpszPassword">
+            Un puntero a una cadena terminada en nulo que especifica la contraseña en texto plano
+            para la cuenta de usuario especificada por lpszUsername.
+            Cuando haya terminado de usar la contraseña, borrar la contraseña de la memoria llamando
+            a la función SecureZeroMemory. Para obtener más información acerca de la protección de contraseñas,
+            vea Contraseñas manipulación.
+            </param>
+            <param name="_dwLogonType">
+            El tipo de operación de inicio de sesión a realizar.
+            Este parámetro puede ser uno de los valores definidos en WINBASE.H.
+            </param>
+            <param name="_dwLogonProvider">
+            Especifica el proveedor de inicio de sesión
+            </param>
+            <param name="_phToken">
+            Un puntero a un identificador variable que recibe un identificador a un símbolo 
+            que representa al usuario especificado. 
+            Se puede utilizar el identificador devuelto para llamar a la función ImpersonateLoggedOnUser().
+            </param>
+            <returns>
+            Si la función tiene éxito, la función devuelve distinto de cero.
+            Si la función falla, devuelve cero. 
+            Para obtener información extendida de error, llamar a GetLastError().
+            </returns>
+            <remarks>http://msdn.microsoft.com/en-us/library/aa378184(VS.85).aspx</remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.CloseHandle(System.IntPtr)">
+            <summary>
+            Funcion del API WIN32 para cerrar un identificador de objeto abierto
+            </summary>
+            <param name="_hObject">Un identificador valido de un objeto abierto</param>
+            <returns>
+            Si la función tiene éxito, la función devuelve distinto de cero.
+            Si la función falla, devuelve cero. 
+            Para obtener información extendida de error, llamar a GetLastError().        
+            </returns>
+            <remarks>http://msdn.microsoft.com/en-us/library/ms724211(VS.85).aspx</remarks>        
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.Finalize">
+            <summary>
+            Destructor por defecto de la clase
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.Dispose(System.Boolean)">
+            <summary>
+            Las clases hijas pueden sobreescribir este metodo para realizar una logica de limpieza de recursos,
+            como por ejemplo eliminar manejadores de eventos o recursos no manejados
+            </summary>
+            <param name="_disposing">
+            Si el flag es true, el metodo esta siendo llamado por un codigo de usuario y
+            se deben limpiar recursos manejados y no manejados.
+            Si el flag es false, el metodo esta siendo llamado por el runtime desde dentro del finalizador y no se deberia
+            tener referencia a otros objetos, donde solo pueden ser eliminados recursos no manejados
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.executeFunction``1(System.String,System.String,System.String,System.Func{System.Boolean,``0})">
+            <summary>
+            Funcion para executar una funcion en un ambito de suplantacion. Esta es la forma mas comoda de ejecutar un codigo suplantando un usuario
+            NOTA: mediante esta funcion no es necesario revertir la suplantacion, sera revertida al salir del ambito de la funcion.
+            </summary>
+            <typeparam name="T">Tipo de objeto a retornar por la funcion</typeparam>
+            <param name="_user">Nombre de la cuenta de usuario</param>        
+            <param name="_domain">Nombre del dominio del usuario</param>
+            <param name="_password">Contraseña de la cuenta de usuario</param>   
+            <param name="_function">
+            Funcion a ejecutar en un ambito de suplantacion, la funcion recibe un parametro indicando si se ha podido suplantar el usuario o no.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.impersonate(System.String,System.String)">
+            <summary>
+            funcion para suplantar un usuario usando la BBDD de cuentas locales 
+            
+            NOTA: Para revertir la suplantacion, se debera llamar a la funcion 'revertImpersonate()'.
+            Si se pierde la referencia al objeto de esta clase y es recolectada por el GC, sera
+            revertida la suplantacion
+            </summary>
+            <param name="_user">Nombre de la cuenta de usuario</param>
+            <param name="_password">Contraseña de la cuenta de usuario</param>
+            <returns>si tiene exito, retorna true. En cualquier otro caso retorna false</returns>        
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.impersonate(System.String,System.String,System.String)">
+            <summary>
+            funcion para suplantar un usuario usando la BBDD de cuentas de dominio
+            
+            NOTA: Para revertir la suplantacion, se debera llamar a la funcion 'revertImpersonate()'.
+            Si se pierde la referencia al objeto de esta clase y es recolectada por el GC, sera
+            revertida la suplantacion
+            </summary>
+            <param name="_user">Nombre de la cuenta de usuario</param>        
+            <param name="_domain">Nombre del dominio del usuario</param>
+            <param name="_password">Contraseña de la cuenta de usuario</param>        
+            <returns>si tiene exito, retorna true. En cualquier otro caso retorna false</returns>        
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.revertImpersonate">
+            <summary>
+            Funcion para revertir la suplantacion de un usuario
+            </summary>
+            <returns>si tiene exito, retorna true. En cualquier otro caso retorna false</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.WindowsImpersonate.getWindowsIdentity">
+            <summary>
+            Funcion para obtener la identidad actual usada en windows.
+            Mediante esta funcion se puede ver el nombre del usuario suplantado
+            </summary>
+            <returns>Nombre del usuario actual</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Security.RijndaelCrypto">
+            <summary>
+            Esta clase usa un algoritmo de clave simetrica (Rijndael/AES) para encriptar y
+            desencriptar datos. 
+            Los contructores estan puestos en cascada, se puede usar el que mejor convenga para la seguridad.
+            Antes de realizar el cifrado y dependiendo del constructor, la clase puede añadir bytes arbitrarios al texto simple 
+            y generar varios valores cifrados para los datos a encriptar, la llave de cifrado, 
+            la inicialización vector, y otros parámetros. Esto hace que sea mas fuerte la seguridad.
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor">
+            <summary>
+            Constructor por defecto de la clase.
+            Este constructor es utilizado inicializar el encriptador con parametros estandard
+            de forma que no sea necesaria ninguna configuracion para encriptar/desencriptar
+            
+            NOTA: este constructor solo esta recomendado para operaciones de encriptacion por
+            defecto, ya que los parametros de inicializacion son literales y se configuran
+            en este constructor, con lo que si se obtienen, la seguridad se vera comprometida.
+            Con el fin de proporcionar un minimo de seguridad ante la ingenieria inversa, los
+            parametros se estableceran en codigo hexadecimal.
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor(System.String,System.String)">
+            <summary>
+            Usar este constructor si se quiere realizar una encriptacion/desencriptacion con:
+            - 256 bits de clave, 
+            - 1 iteracion de derivacion de contraseña, 
+            - sin vector de inicializacion,
+            - cipher basado en ECB (Electronic codebook - El menos seguro ),
+            - de 4 a 8 bytes de salto
+            </summary>
+            <param name="_passPhrase">
+            Contraseña desde la cual se derivara una contraseña pseudo-aleatoria.
+            La derivacion de la contraseña se utilizara para generar la clave de cifrado.
+            La contraseña puede ser cualquier cadena. El valor de la contraseña debe mantenerse en secreto.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param> 
+            <remarks>
+            Este constructon no es recomendado por que no usa un vector de iniciliazacion
+            y usa un cipher basado en ECB (Electronic codebook) menos seguro que CBC (Cipher-block chaining).
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Usar este constructor si se quiere realizar una encriptacion/desencriptacion con:
+            - 256 bits de clave, 
+            - 1 iteracion de derivacion de contraseña, 
+            - cipher basado en CBC (Cipher-block chaining).
+            - de 4 a 8 bytes de salto 
+            </summary>
+            <param name="_passPhrase">
+            Contraseña desde la cual se derivara una contraseña pseudo-aleatoria.
+            La derivacion de la contraseña se utilizara para generar la clave de cifrado.
+            La contraseña puede ser cualquier cadena. El valor de la contraseña debe mantenerse en secreto.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param>         
+            <param name="_initVector">
+            Vector de inicializacion (IV). Este valor es requerido para encriptar el
+            primer bloque de datos. Para esta clase IV debe ser de 16 caracteres ASCII.
+            El valor IV no tiene que mantenerse en secreto.
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Usar este constructor si se quiere realizar una encriptacion/desencriptacion con:
+            - 256 bits de clave, 
+            - 1 iteracion de derivacion de contraseña, 
+            - cipher basado en CBC (Cipher-block chaining).
+            - de 0 a 8 bytes de salto
+            </summary>
+            <param name="_passPhrase">
+            Contraseña desde la cual se derivara una contraseña pseudo-aleatoria.
+            La derivacion de la contraseña se utilizara para generar la clave de cifrado.
+            La contraseña puede ser cualquier cadena. El valor de la contraseña debe mantenerse en secreto.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param>     
+            <param name="_initVector">
+            Vector de inicializacion (IV). Este valor es requerido para encriptar el
+            primer bloque de datos. Para esta clase IV debe ser de 16 caracteres ASCII.
+            El valor IV no tiene que mantenerse en secreto.
+            </param>
+            <param name="_minSaltLen">
+            Minimo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es menor de 4, sera usado el minimo valor por defecto.
+            (Actualmente 4 bytes).
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Usar este constructor si se quiere realizar una encriptacion/desencriptacion con:
+            - 256 bits de clave, 
+            - 1 iteracion de derivacion de contraseña, 
+            - cipher basado en CBC (Cipher-block chaining).
+            - algoritmo HASH SHA1,
+            - Usar los parametros 'minSaltLen' y 'maxSaltLen' para especificar el tamaño del salto aleatorio 
+            </summary>
+            <param name="_passPhrase">
+            Contraseña desde la cual se derivara una contraseña pseudo-aleatoria.
+            La derivacion de la contraseña se utilizara para generar la clave de cifrado.
+            La contraseña puede ser cualquier cadena. El valor de la contraseña debe mantenerse en secreto.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param>           
+            <param name="_initVector">
+            Vector de inicializacion (IV). Este valor es requerido para encriptar el
+            primer bloque de datos. Para esta clase IV debe ser de 16 caracteres ASCII.
+            El valor IV no tiene que mantenerse en secreto.
+            </param>
+            <param name="_minSaltLen">
+            Minimo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es menor de 4, sera usado el minimo valor por defecto.
+            (Actualmente 4 bytes).
+            </param>
+            <param name="_maxSaltLen">
+            Maximo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es negativo o mallor que 255, sera usado el maximo valor por defecto
+            (actualmente 8 Bytes). Si el valor es inferior al minimo, no se usara salto.
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor(System.String,System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Usar este constructor si se quiere realizar una encriptacion/desencriptacion con:
+            - 1 iteracion de derivacion de contraseña, 
+            - cipher basado en CBC (Cipher-block chaining).
+            </summary>
+            <param name="_passPhrase">
+            Contraseña desde la cual se derivara una contraseña pseudo-aleatoria.
+            La derivacion de la contraseña se utilizara para generar la clave de cifrado.
+            La contraseña puede ser cualquier cadena. El valor de la contraseña debe mantenerse en secreto.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param>           
+            <param name="_initVector">
+            Vector de inicializacion (IV). Este valor es requerido para encriptar el
+            primer bloque de datos. Para esta clase IV debe ser de 16 caracteres ASCII.
+            El valor IV no tiene que mantenerse en secreto.
+            </param>
+            <param name="_minSaltLen">
+            Minimo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es menor de 4, sera usado el minimo valor por defecto.
+            (Actualmente 4 bytes).
+            </param>
+            <param name="_maxSaltLen">
+            Maximo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es negativo o mallor que 255, sera usado el maximo valor por defecto
+            (actualmente 8 Bytes). Si el valor es inferior al minimo, no se usara salto.
+            </param>
+            <param name="_keySize">
+            Tamaño de la clave simetrica (en bits): 128, 192, o 256.
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.#ctor(System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Usar este constructor si se quiere realizar una encriptacion/desencriptacion
+            parametrizando todos los parametros.
+            </summary>
+            <param name="_passPhrase">
+            Contraseña desde la cual se derivara una contraseña pseudo-aleatoria.
+            La derivacion de la contraseña se utilizara para generar la clave de cifrado.
+            La contraseña puede ser cualquier cadena. El valor de la contraseña debe mantenerse en secreto.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param>            
+            <param name="_initVector">
+            Vector de inicializacion (IV). Este valor es requerido para encriptar el
+            primer bloque de datos. Para esta clase IV debe ser de 16 caracteres ASCII.
+            El valor IV no tiene que mantenerse en secreto.
+            </param>
+            <param name="_minSaltLen">
+            Minimo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es menor de 4, sera usado el minimo valor por defecto.
+            (Actualmente 4 bytes).
+            </param>
+            <param name="_maxSaltLen">
+            Maximo tamaño (en Bytes) para la generacion del salto aleatorio que sera
+            añadido al principio de los datos antes de generar la encriptacion.
+            Cuando este valor es negativo o mallor que 255, sera usado el maximo valor por defecto
+            (actualmente 8 Bytes). Si el valor es inferior al minimo, no se usara salto.
+            </param>
+            <param name="_keySize">
+            Tamaño de la clave simetrica (en bits): 128, 192, o 256.
+            </param>
+            <param name="_saltValue">
+            El valor de salto usado para crear la clave HASH de la contraseña durante la generacion de la clave.
+            No es igual que el salto usado en la encriptacion, este parametro puede ser cualquier cadena (minimo 8 char)
+            </param>
+            <param name="_passwordIterations">
+            Numero de iteraciones usadas en la contraseña HASH.
+            A mas iteraciones mas seguridad, pero mas lento el proceso.
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.Encrypt(System.String)">
+            <summary>
+            Encriptar una cadena y obtenerla formateada en base-64.
+            </summary>
+            <param name="_plainText">
+            Cadena de texto a encriptar
+            </param>
+            <returns>
+            Cadena con el Cipher formateado como base-64
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.Encrypt(System.Byte[])">
+            <summary>
+            Encriptar un array de bytes y obtenerlos formateados en base-64
+            </summary>
+            <param name="_plainTextBytes">
+            Array de bytes con el texto a encriptar
+            </param>
+            <returns>
+            Cadena con el Cipher formateado como base-64
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.EncryptToBytes(System.String)">
+            <summary>
+            Encriptar una cadena generando un cipher en un array de bytes
+            </summary>
+            <param name="_plainText">
+            Cadena de datos a encriptar
+            </param>
+            <returns>
+            cipher formateado como un array de bytes
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.EncryptToBytes(System.Byte[])">
+            <summary>
+            Encriptar un array de bytes generando un cipher en un array de bytes
+            </summary>
+            <param name="_plainTextBytes">
+            Array de bytes con los datos a encriptar
+            </param>
+            <returns>
+            cipher formateado como un array de bytes
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.Decrypt(System.String)">
+            <summary>
+            Desencriptar un cipher en base-64 contenido en una cadena, obteniendo los datos en una cadena
+            </summary>
+            <param name="_cipherText">
+            Cadena con el cipher en Base-64 con los datos a desencriptar
+            </param>
+            <returns>
+            Cadena con los datos desencriptados
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.Decrypt(System.Byte[])">
+            <summary>
+            Desencriptar un cipher en base-64 contenido en un array de bytes, obteniendo los datos en una cadena
+            </summary>
+            <param name="_cipherTextBytes">
+            Array de bytes con el cipher en Base-64 para ser desencriptado
+            </param>
+            <returns>
+            Cadena con los datos desencriptados
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.DecryptToBytes(System.String)">
+            <summary>
+            Desencriptar un cipher en base-64 contenido en una cadena, obteniendo los datos en un array de bytes
+            </summary>
+            <param name="_cipherText">
+            Cadena con el cipher en Base-64 para desencriptar
+            </param>
+            <returns>
+            Array de bytes con los datos desencriptados
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.DecryptToBytes(System.Byte[])">
+            <summary>
+            Desencriptar un cipher en base-64 contenido en un array de bytes, obteniendo los datos en un array de bytes
+            </summary>
+            <param name="_cipherTextBytes">
+            Array de bytes con el cipher en Base-64 para ser desencriptado
+            </param>
+            <returns>
+            Array de bytes con los datos desencriptados
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.AddSalt(System.Byte[])">
+            <summary>
+            Añadir un array de bytes generados aleatoriamente al comienzo del
+            array que se le pasa
+            </summary>
+            <param name="_plainTextBytes">
+            array de Bytes conteniendo donde se añadira el array al principio
+            </param>
+            <returns>
+            Cada array original de Bytes de datos (si el salto no es usado), o un
+            array modificado que contiene una generacion aleatoria de saltos añadidos
+            al comienzo de los bytes de los datos.
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.GenerateSalt">
+            <summary>
+            Generar un array para el salto, que contiene Bytes aleatorios.
+            </summary>
+            <returns>
+            Array de Bytes generados aleatoriamente
+            </returns>
+            <remarks>
+            El tamaño de salto sera definido por un valor aleatorio o exacto como se
+            especifico por los parametros 'minSaltLen' y 'maxSaltLen' pasados al constructor
+            los primeros 4 Bytes del array de salto, contendran el tamaño del salto separado
+            entre 4 y 2 piezas de bits
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Security.RijndaelCrypto.GenerateRandomNumber(System.Int32,System.Int32)">
+            <summary>
+            Generacion de un entero aleatorio
+            </summary>
+            <param name="_minValue">
+            Valor minimo
+            </param>
+            <param name="_maxValue">
+            Valor maximo
+            </param>
+            <returns>
+            1 valor entero aleatorio entre el valor minimo y maximo
+            </returns>
+            <remarks>
+            Este metodo supera las limitaciones de la clase Random de Framework .NET
+            en el que cuando es inicializado multiples veces en un periodo corto de tiempo, puede 
+            generar valores aleatorios identicos.
+            </remarks>
+        </member>
+        <member name="T:Toolkit.Helpers.Threading.MutexGlobalInstance">
+            <summary>
+            Clase para la creacion de un mutex a nivel global del sistema para disponer de un unico bloque de proceso seguro en multihilo/multiproceso.
+            Mediante esta clase se puede crear un bloqueo exclusivo del mismo modo que la sentencia 'lock' pero a nivel del sistema, de modo que pueda
+            funcionar por ejemplo entre diferentes worker process en servicios expuestos por el IIS.
+            </summary>
+            <remarks>
+            Debe liberarse mediante una llamada a Dispose() o usar en un bloque using (mirar ejemplo).
+            Esta clase es algo mas costosa en terminos de computacion que la clausula lock, pero asegura bloqueo exclusivo a nivel del sistema    
+            </remarks>
+            <example>
+               // creacion de un bloqueo exclusivo para 1000ms (usar 0 para tiempo infinito)
+               using (new MutexGlobalInstance("MiMutex", 1000)) 
+               {
+                   // ... Codigo que sera ejecutado exclusivamente ...
+               }
+            </example>
+        </member>
+        <member name="F:Toolkit.Helpers.Threading.MutexGlobalInstance.m_hasHandle">
+            <summary>flag para guardar un indicador de que se dispone de un manejador del mutex</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Threading.MutexGlobalInstance.m_mutex">
+            <summary>Objeto con el mutex a crear</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Threading.MutexGlobalInstance.InitMutex(System.String)">
+            <summary>
+            Funcion para inicializar el mutex de forma global
+            </summary>
+            <param name="_name">Nombre de la exlusion mutua del mutex a crear</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Threading.MutexGlobalInstance.#ctor(System.String,System.Int32)">
+            <summary>
+            Constructor por defecto de la clase que creara el mutex        
+            </summary>
+            <param name="_name">
+            Nombre de la exlusion mutua del mutex a crear.
+            (el nombre es el identificador del mutex a nivel de sistema, de modo que el bloqueo es identificado por el nombre, 
+            2 mutex con diferentes nombres no seran bloqueados por el otro, tan solo por si mismos)
+            </param>
+            <param name="_timeOut">
+            Tiempo a esperar en un bloqueo en milisegundos (usar 0 para tiempo infinito)
+            Este sera el tiemipo maximo a esperar en caso de que exista un bloqueo
+            </param>
+        </member>
+        <member name="M:Toolkit.Helpers.Threading.MutexGlobalInstance.Dispose">
+            <summary>
+            Funcion para liberar el mutex del bloqueo
+            </summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Types">
+            <summary>
+            Clase con metodos de ayuda para trabajar con tipos .net
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Types.createDefaultDynamicProperty(System.Reflection.Emit.TypeBuilder,System.String,System.Type)">
+            <summary>
+            Funcion para crear una propiedad dinamica en un generador de tipo mediante los parametros de entrada
+            </summary>
+            <param name="_typeBuilder">Generador dinamico de tipo en el cual sera añadida la propiedad dinamica</param>
+            <param name="_propertyName">Nombre de la propiedad dinamica a añadir al tipo</param>
+            <param name="_propertyType">Tipo de la propiedad dinamica</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Types.createTypeBuilder(System.String,System.String,System.String)">
+            <summary>
+            Funcion para crear un generador para crear un tipo dinamico, la funcion creara un tipo en el ensamblado dinamico especificado en el cual se podran añadir miembros de forma dinamica.
+            </summary>
+            <param name="_assemblyName">Nombre del ensamblado dinamico que contendra el tipo</param>
+            <param name="_moduleName">Nombre del modulo del ensamblado dinamico que contendra el tipo</param>
+            <param name="_typeName">Nombre del tipo dinamico a crear</param>
+            <returns>Generador para el tipo dinamico especificado por los parametros de entrada</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.AspRuntimeHost">
+            <summary>
+            Clase con funcionalidades para crear y mantener una aplicacion host aspnet, de modo que se pueda hacer uso del runtime
+            para hacer uso de un HTTPContext, peticiones web, etc.   
+            
+            NOTA: para crear un host, debe hacerse uso de la funcion <see cref="M:Toolkit.Helpers.Web.AspRuntimeHost.CreateApplicationHost(System.String,System.String)"/>, del mismo modo para destruir el 
+            host y eliminar el AppDomain, se debe usar la funcion <see cref="M:Toolkit.Helpers.Web.AspRuntimeHost.DestroyApplicationHost"/>
+            
+            NOTA2: el host remoto se descarga si no se usa, de modo que hay que tenerlo en cuenta al depurar la aplicacion
+            </summary>
+            <example>
+            // Inicializar un Host ASPNET para hacer uso del sistema de pertenencias de ASPNET 
+            // u otras caracteristicas propias del entorno            
+            m_aspNetRuntime = new Toolkit.Helpers.AspRuntimeHost();
+            // iniciar el runtime ASPNET
+            m_aspNetRuntime.CreateApplicationHost();
+            </example>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspRuntimeHost.m_aspNetHost">
+            <summary>variable para guardar el dominio de la aplicacion host</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspRuntimeHost.m_physicalDir">
+            <summary>variable para guardar la direccion fisica del directorio del host
+            ej:  "C:\Datos\Proyectos\Adding\OroDirect\OroDirect.Www\"
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspRuntimeHost.m_virtualDir">
+            <summary>variable para guardar la direccion virtual del hos</summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.AspRuntimeHost.Host">
+            <summary>
+            Propiedad para obtener el host actualmente creado
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.AspRuntimeHost.VirtualDir">
+            <summary>
+            Propiedad para obtener o establecer la ruta virtual del host
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.AspRuntimeHost.PhysicalDir">
+            <summary>
+            Propiedad para obtener o establecer la ruta fisica del host
+            </summary>
+            <example>C:\Datos\Proyectos\Adding\OroDirect\OroDirect.Www\</example>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.AspRuntimeHost.CreateApplicationHost(System.String,System.String)">
+            <summary>
+            Funcion para crear una aplicacion host de aspnet en un AppDomain nuevo, de modo que se pueda hacer uso del runtime
+            para hacer uso de un HTTPContext, pepticiones web, etc.
+            NOTA: se deben cargar las referencias necesarias mediante el metodo 'attachAssembly' de modo que la aplicacion 
+            se inicie con todos los parametros. En caso contrario, es posible que el AppDomain se descargue y no se pueda usar.
+            </summary>
+            <example>
+            // Inicializar un Host ASPNET para hacer uso del sistema de pertenencias de ASPNET 
+            // u otras caracteristicas propias del entorno            
+            m_aspNetRuntime = new Toolkit.Helpers.AspRuntimeHost();
+            // iniciar el runtime ASPNET
+            m_aspNetRuntime.CreateApplicationHost();
+            </example>
+            <returns>el host aspnet creado</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.AspRuntimeHost.DestroyApplicationHost">
+            <summary>
+            Funcion para destruir y liberar los recursos del host aspnet
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.AspRuntimeHost.attachAssembly(System.String)">
+            <summary>
+            Funcion para asociar un ensamblado al sitio ASPNET que se esta usando, de modo que se disponga
+            de las referencias necesarias.
+            Esto es el equivalente a la opcion 'agregar referencia' en VS
+            </summary>
+            <param name="_filename">ruta del ensamblado que se agregara</param>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.AspNetHost">
+            <summary>
+            Clase con el Host AspNet creado.
+            Nota: se pueden llamar a funciones bajo este contexto mediante <see cref="!:AppDomain.DoCallBack()"/> pero se requiere que la funcion
+            sea un metodo estatico o que la clase este marcada como serializable
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspNetHost.m_appDomain">
+            <summary>variable para guardar el dominio de la aplicacion host</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspNetHost.m_webPage">
+            <summary>pagina de prueba para montar el runtime</summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.AspNetHost.AppDomain">
+            <summary>
+            Propiedad para obtener el AppDomain del host
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.AspNetHost.CaptureAppDomain">
+            <summary>
+            funcion para guardar el dominio actual 
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.AspNetHost.stopHost">
+            <summary>
+            Funcion para detener el host y liberar recursos
+            </summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.AspNetRuntimeBasic">
+            <summary>
+            Clase para crear un Runtime ASPNET basico en el mismo AppDomain actual, de modo que hace uso de la configuracion
+            del AppDomain actual.
+            Esta clase, ademas asocia el contexto HTTP del runtime, de modo que se pueda usar mediante 'System.Web.HttpContext'
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspNetRuntimeBasic.m_physicalDir">
+            <summary>variable para guardar la direccion fisica del directorio del host</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspNetRuntimeBasic.m_virtualDir">
+            <summary>variable para guardar la direccion virtual del hos</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.AspNetRuntimeBasic.m_webPage">
+            <summary>pagina de prueba para montar el runtime</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.AspNetRuntimeBasic.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Constructor por defecto de la clase, donde sera inicializado todo el Runtime ASPNET           
+            </summary>
+            <param name="_physicalDir">
+            directorio fisico que usara el host ASPNET
+            tj: "C:\Datos\Proyectos\Adding\OroDirect\OroDirect.Www\";
+            </param>
+            <param name="_virtualDir">directorio virtual del host ASPNET</param>
+            <param name="_webPage">
+            pagina web de prueba para montar el host ASPNET (tiene que existir la pagina)
+            ej: "index.html";
+            </param>
+            <param name="_createUser">
+            si es true, se creara un usuario en el contexto HTTP igual a el usuario 'System.Threading.Thread.CurrentPrincipal' 
+            (aunque no estara autenticado en el sistema de pertenencias)
+            si es false, el contexto HTTP no tendra ningun usuario
+            NOTA: Hay que tener cuidado al usar el usuario System.Threading.Thread.CurrentPrincipal en el contexto web, ya que es posible que
+            tenga demasiados permisos y exista un problema de seguridad, NO usar si no se esta seguro del riesgo
+            </param>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.CustomSessionState">
+            <summary>
+            Clase heredada 'IHttpSessionState' para crear una sesion personalizada para poder usarse en los Runtime AspNet    
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.MAX_TIMEOUT">
+            <summary>el tiempo de espera no pasa de 24 horas</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_id">
+            <summary>Identificador unico de la sesion</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_sessionItems">
+            <summary>coleccion de objeto para el estado de la sesion</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_staticObjects">
+            <summary>coleccion de objetos con el ambito de aplicacion</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_timeout">
+            <summary>
+            Obtiene y establece el tiempo de espera (en minutos) que se permite 
+            entre solicitudes antes de que el proveedor de estado de sesión termine la sesión.
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_cookieMode">
+            <summary>modo de uso de las cookies</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_mode">
+            <summary>modo de estado de la sesion</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_newSession">
+            <summary>indica si la sesión se creó con la solicitud actual</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_abandon">
+            <summary>flag para guardar si la sesion esta cerrada</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.CustomSessionState.m_isReadonly">
+            <summary>Indica si la sesion es de solo lectura</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.#ctor">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>        
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.#ctor(System.String,System.Web.SessionState.ISessionStateItemCollection,System.Web.HttpStaticObjectsCollection,System.Int32,System.Boolean,System.Web.HttpCookieMode,System.Web.SessionState.SessionStateMode,System.Boolean)">
+            <summary>
+            Constructor sobrecargado de la clase
+            </summary>
+            <param name="id">identificador del estado de sesion</param>
+            <param name="sessionItems">coleccion de objetos para el estado de la sesion</param>
+            <param name="staticObjects">coleccion de objetos con el ambito de aplicacion</param>
+            <param name="timeout">tiempo de expiracion de la sesion</param>
+            <param name="cookieMode">modo de uso de las cookies</param>
+            <param name="mode">modo de estado de la sesion</param>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.CodePage">
+            <summary>
+            'Session.CodePage' existe solo para soporte con compatibilidad ASP.
+            Para desarrollo con ASP.NET debe usarse 'Response.ContentEncoding'
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.IsNewSession">
+            <summary>
+            Obtiene un valor que indica si la sesión se creó con la solicitud actual
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.IsAbandoned">
+            <summary>
+            Propiedad usada por el modulo de estado de sesion para optimizar el trabajo de abandono durante el evento 'ReleaseRequestState'  
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.IsReadOnly">
+            <summary>
+            Obtiene un valor que indica si la sesión es de sólo lectura
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.LCID">
+            <summary>
+            'Session.LCID' existe solo para soporte con compatilidad ASP.
+            Para desarrollos con ASP.NET, debe usarse 'Page.LCID'
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.Timeout">
+            <summary>
+            Obtiene y establece el tiempo de espera (en minutos) que se permite 
+            entre solicitudes antes de que el proveedor de estado de sesión termine la sesión.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.SessionID">
+            <summary>
+            Obtiene el identificador único de la sesión.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.Mode">
+            <summary>
+            Obtiene el modo actual del estado de la sesión.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.IsCookieless">
+            <summary>
+            Obtiene un valor que indica si el identificador de la sesión está incrustado 
+            en la dirección URL o se almacena en una cookie HTTP.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.CookieMode">
+            <summary>
+            Obtiene un valor que indica si la aplicación está configurada para sesiones sin cookie
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.StaticObjects">
+            <summary>
+            Obtiene una colección de objetos declarados mediante etiquetas 
+            &lt;object Runat="Server" Scope="Session"/&gt; en el archivo de aplicación de ASP.NET Global.asax.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.Item(System.String)">
+            <summary>
+            Obtiene o establece un valor de sesión por nombre.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.Item(System.Int32)">
+            <summary>
+            Obtiene o establece un valor de sesión por índice numérico.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.Count">
+            <summary>
+            Obtiene el número de elementos de la colección del estado de la sesión.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.Keys">
+            <summary>
+            Obtiene una colección de claves para todos los valores almacenados en la colección de estados de sesión.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.SyncRoot">
+            <summary>
+            Obtiene un objeto que se puede utilizar para sincronizar el acceso a la colección 
+            de valores de estado de la sesión.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Web.CustomSessionState.IsSynchronized">
+            <summary>
+            Obtiene un valor que indica si el acceso a la colección de valores del 
+            estado de la sesión está sincronizado (es seguro para la ejecución de subprocesos)
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.Abandon">
+            <summary>
+            Funcion para marcar la sesion como abandonada. La propiedad <see cref="P:Toolkit.Helpers.Web.CustomSessionState.IsAbandoned"/> es usada por el modulo
+            de estado de sesion para optimizar el trabajo de abandono durante el evento 'ReleaseRequestState'        
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.Add(System.String,System.Object)">
+            <summary>
+            agrega un nuevo elemento a la coleccion de estado de la sesion
+            </summary>
+            <param name="name">nombre del elemento que se va a agregar</param>
+            <param name="value">valor del elemento</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.Remove(System.String)">
+            <summary>
+            Elimina un elemento de la coleccion de estado de la sesion
+            </summary>
+            <param name="name">nombre del elemento que se va a eliminar</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.RemoveAt(System.Int32)">
+            <summary>
+            Elimina un elemento del indice especificado de la coleccion de estado de la sesion
+            </summary>
+            <param name="index">indice del elemento a eliminar</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.Clear">
+            <summary>
+            Quita todos los valores y claves de la coleccion de estado de la sesion
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.RemoveAll">
+            <summary>
+            Quita todos los valores y claves de la coleccion de estado de la sesion
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.GetEnumerator">
+            <summary>
+            Devuelve un enumerador que puede ser usado para leer todos los nombres de variables de estado
+            </summary>
+            <returns>enumerador para recorrer</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.CustomSessionState.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copia la coleccion de valores de estado de la sesion en una matriz unidimensional, comenzando por el
+            indice especificado de la matriz
+            </summary>
+            <param name="items">array que recive los valores de la sesion</param>
+            <param name="index">indice en el array donde comienza la copia</param>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.DeviceCapabilities">
+            <summary>
+            Clase con funcionalidades para detectar las capacidades de un dispositivo cliente
+            </summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.DeviceCapabilities.enumDeviceTypes">
+            <summary>
+            Enumeracion con los tipos de dispositivos actualmente disponibles para la aplicacion.
+            NOTA: se deben añadir segun sean añadidas areas para otros dispositivos
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.DeviceCapabilities.enumDeviceTypes.UNKNOWN">
+            <summary>Dispositivo desconocido</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.DeviceCapabilities.enumDeviceTypes.DESKTOP">
+            <summary>pc de escritorio</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.DeviceCapabilities.enumDeviceTypes.MOBILE">
+            <summary>telefono movil</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.DeviceCapabilities.enumDeviceTypes.TABLET">
+            <summary>tablet</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Web.DeviceCapabilities.enumDeviceTypes.TV">
+            <summary>Television</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.DeviceCapabilities.getDeviceType(System.String)">
+            <summary>
+            Funcion para obtener el tipo de dispositivo usado en una peticion web mediante el user agent
+            </summary>
+            <param name="_requestUserAgent">
+            user agent enviado por el cliente mediante el cual se obtendra el tipo de dispositivo
+            puede obtenerse desde la peticion por ejemplo mediante 'Request.ServerVariables["HTTP_USER_AGENT"]'
+            </param>
+            <returns>tipo de dispositivo usado por el cliente que realiza la solicitud</returns>
+            <remarks>
+            Esta funcion esta en constante evolucion, ya que a diario surgen nuevos dispositivos, de modo que debe ir manteniendose conforme
+            se van probando nuevos dispositivos.
+            NOTA: mantener la misma estructura e intentar añadir a las expresiones existentes antes de añadir nuevas
+            </remarks>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.HttpContentTypes">
+            <summary>
+            Clase para contener los tipos de contenidos definidos por el estandard MIME 
+            mas comunes correspondientes a las extensiones.
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.HttpContentTypes.GetContentType(System.String)">
+            <summary>
+            Funcion para obtener el tipo de contenido definido por el estandard MIME 
+            para una extension especificada
+            </summary>
+            <param name="_extension">Extension de la cual se quiere obtener el tipo de contenido</param>
+            <returns>Tipo de contenido (Content-Type) correspondiente a la extension.</returns>
+            <remarks>Actualmente hay tipos de extensiones repetidas con tipos/subtipos diferentes
+            que se han comentado, si algun tipo de extension no funciona correctamente, se puede cambiar los
+            comentarios por otra mas valida. En una revision futura se modificara esta funcionalidad.</remarks>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.WebServices">
+            <summary>
+            Helper con funciones comunes en la programacion contra servicios web
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CallSecuredService``3(System.Func{``0,System.Boolean},System.Func{``1,``2})">
+            <summary>
+            Funcion para encapsular una llamada a una operacion de un servicio WCF que esta restringida mediante autenticacion ASP.NET basada en cookies.
+            Mediante esta funcion se podra llamar a la funcion de autenticacion y en caso de ser correcta, se llamara a la funcion de un servicio restringido.
+            La funcion encapsula el sistema el manejo de las cabeceras de WCF para el envio de la cookie de autenticacion
+            </summary>
+            <typeparam name="TLogon">Tipo con la clase del servicio de autenticacion</typeparam>
+            <typeparam name="TService">Tipo con la clase del servicio restringido a usar</typeparam>
+            <typeparam name="TResult">Resultado de la llamada a una funcion del servicio restringido</typeparam>
+            <param name="_logonExpression">funcion que sera llamada para acceder al servicio de logon y loguearse</param>
+            <param name="_callExpression">Funcion que sera llamada SOLO si el logon es correcto, para poder llamar al servicio restringido</param>
+            <returns>Resultado de la expresion dada por el parametro '_callExpression'</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CallSecuredService``2(System.String,``0,System.Func{``0,``1})">
+            <summary>
+            Funcion para encapsular una llamada a una operacion de un servicio WCF que esta restringida mediante autenticacion ASP.NET basada en cookies.
+            Mediante esta funcion se podra invocar una funcion de un servicio WCF restringido, mediante la cookie de autenticacion
+            La funcion encapsula el sistema el manejo de las cabeceras de WCF para el envio de la cookie de autenticacion
+            </summary>
+            <typeparam name="TService">Tipo con la clase del servicio restringido a usar</typeparam>
+            <typeparam name="TResult">Resultado de la llamada a una funcion del servicio restringido</typeparam>
+            <param name="_authCookie">Cookie que sera usada para la autenticacion en el servicio</param>
+            <param name="_serviceClient">Objeto con el servicio cliente que sera usado para realizar la llamada</param>
+            <param name="_callExpression">Funcion que sera llamada SOLO si el logon es correcto, para poder llamar al servicio restringido</param>
+            <returns>Resultado de la expresion dada por el parametro '_callExpression'</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CallSecuredService``1(System.Func{``0,System.Boolean},System.String)">
+            <summary>
+            Funcion para encapsular una llamada a una operacion de un servicio WCF basado en REST que esta restringida mediante autenticacion ASP.NET basada en cookies.
+            Mediante esta funcion se podra llamar a la funcion de autenticacion y en caso de ser correcta, se llamara a la funcion de un servicio restringido basado en REST.
+            La funcion encapsula el sistema el manejo de las cabeceras de WCF para el envio de la cookie de autenticacion
+            </summary>
+            <typeparam name="TLogon">Tipo con la clase del servicio de autenticacion</typeparam>
+            <param name="_logonExpression">funcion que sera llamada para acceder al servicio de logon y loguearse</param>
+            <param name="_restUrl">URL del servicio rest restringido a invocar</param>
+            <returns>Resultado de la llamada al servicio WCF basado en REST, null en caso de no error o no poderse autenticar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CallSecuredService(System.String,System.String)">
+            <summary>
+            Funcion para encapsular una llamada a una operacion de un servicio WCF basado en REST que esta restringida mediante autenticacion ASP.NET basada en cookies.
+            Mediante esta funcion se podra invocar un servicio REST WCF usando la cookie de autenticacion.
+            La funcion encapsula el sistema el manejo de las cabeceras de WCF para el envio de la cookie de autenticacion
+            </summary>
+            <param name="_authCookie">Cookie que sera usada para la autenticacion en el servicio</param>
+            <param name="_restUrl">URL del servicio rest restringido a invocar</param>
+            <returns>Resultado de la llamada al servicio WCF basado en REST, null en caso de no error o no poderse autenticar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CallLogonService``1(System.Func{``0,System.Boolean})">
+            <summary>
+            Funcion para encapsular la llamada a un servicio de logueo WCF para obtener la cookie de autenticacion.
+            La llamada debera ser realizada en la expresion del parametro de entrada
+            </summary>
+            <typeparam name="TLogon">Tipo con la clase del servicio de autenticacion</typeparam>
+            <param name="_logonExpression">funcion que sera llamada para acceder al servicio de logon y loguearse</param>
+            <returns>Cadena con la Cookie de autenticacion, null en caso de no existir o no poderse autenticar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CloseConnection(System.ServiceModel.ICommunicationObject)">
+            <summary>
+            Metodo extensor para cerrar la conexion en los clientes de WCF basandose en el sistema propuesto por microsoft en:
+            http://msdn.microsoft.com/en-us/library/aa355056.aspx
+            </summary>
+            <param name="_client">cliente WCF que se va a cerrar</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebServices.CallLogonRestService``1(``0,System.String,System.String)">
+            <summary>
+            Funcion para loguearse en un servicio Full REST (WebApi) mediante POST, usando autenticacion FORMS y obtener las cookies para poder usarse en siguientes solicitudes
+            </summary>
+            <param name="_authModel">Modelo de autenticacion a usar en el servicio</param>
+            <param name="_baseAddress">Url base del servicio rest</param>
+            <param name="_requestUri">Url del servicio (relativa a la url base)</param>
+            <returns>Enumeracion de cookies retornadas por el servicio, null en caso de no poder obtenerse</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Web.WebSockets">
+            <summary>
+            Clase para implementar peticiones HTTP de bajo nivel mediante Sockets Berkeley
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Web.WebSockets.HttpRequest(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Funcion para enviar una peticion HTTP mediante un socket
+            </summary>
+            <param name="_hostNameOrAddress">dns o ip del host al que sera realizada la conexion</param>
+            <param name="_portNumber">Puerto del host al que sera realizada la conexion</param>
+            <param name="_content">Contenido con la cabecera HTTP y cuerpo a enviar mediante el socket en bytes</param>
+            <returns>array de bytes con la respuesta del host</returns>     
+            <exception cref="T:System.ArgumentNullException">El parámetro _hostNameOrAddress es null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">La longitud del parámetro _hostNameOrAddress es mayor que 255 caracteres</exception>
+            <exception cref="T:System.Net.Sockets.SocketException">Se produjo un error al resolver el parámetro _hostNameOrAddress</exception>
+            <exception cref="T:System.ObjectDisposedException">System.Net.Sockets.Socket se ha cerrado</exception>
+            <exception cref="T:System.Security.SecurityException">Una llamada no dispone de permiso para la operación solicitada</exception>
+            <exception cref="T:System.ArgumentException">El parámetro _hostNameOrAddress no tiene una dirección IP válida</exception>
+            <example>
+            Ejemplo de cabecera HTTP:
+            
+            string header = "POST /MyWCFMathService/Service/MathService HTTP/1.1\r\n";
+            header += "Content-Type: application/soap+xml; charset=utf-8\r\n";
+            header += "SOAPAction: 'http://tempuri.org/IMathService/Sum'\r\n";
+            header += "Host: localhost:8000\r\n";
+            header += "Content-Length: " + soapMessage.Length + "\r\n";
+            header += "Expect: 100-continue\r\n";
+            //header += "Connection: Keep-Alive\r\n\r\n";
+            header += "Connection: Close\r\n\r\n";
+            header += soapMessage;
+            
+            NOTA: se puede observar que debe ir un \r\n en cada linea, segun la especificacion de cabeceras HTTP
+            
+            </example>
+        </member>
+        <member name="T:Toolkit.Helpers.Log">
+            <summary>
+            Clase de ayuda con funcionalidades comunes de ayuda para el uso de un registro de log
+            
+            NOTA: esta clase puede hacer uso de la clase diagnostico por defecto de .net, se tiene que 
+            asegurar que no existe ningun listener en el archivo de configuracion que sobreescribe la clase por defecto, ya que no funcionara
+            en la seccion de configuracion 'system.diagnostics', en caso de haber alguna se debe eliminar si se quiere usar esta funcionalidad
+            mediante '&lt;remove name="AzureDiagnostics" /&gt;'  
+            
+            CONFIGURACION: se debe añadir la entrada 'Toolkit.LogStore' conteniendo el valor donde sera registrado el log en 
+                el archivo de configuracion de cada aplicacion que haga uso de este sistema. El valor viene dado por la enumeracion <see cref="T:Toolkit.Helpers.Log.enumLogStore"/>
+                y puede concatenarse varios mediante el operador a nivel de bit '|' ej: EVENTVWR | FILE. 
+                (NONE no puede ser asociado con ningun otro y es el valor por defecto en caso de no existir la clave en el archivo de configuracion)
+            </summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Log.enumLogStore">
+            <summary>
+            Enumeracion con los diferentes tipos de almacenamiento donde se pueden registrar los logs
+            NOTA: los valores representan bits para poder mapearlos a una variable y poder usar varios almacenamientos simultaneos
+            concatenando valores con el operador a nivel de bit '|' ej: EVENTVWR | FILE
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumLogStore.NONE">
+            <summary>ningun almacenamiento</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumLogStore.EVENTVWR">
+            <summary>El registro de logs se guarda en el registro de eventos de windows</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumLogStore.FILE">
+            <summary>El registro de logs se guarda en un archivo de texto</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Log.enumWarningLevel">
+            <summary>
+            Enuemracion con los diferentes tipos de niveles de alertas en los logs, mediante estos niveles se podra filtrar que alertas saldran o no en los logs.
+            Los niveles funcionan en orden inverso (nivel 1 = maximo)
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumWarningLevel.LEVEL_1">
+            <summary>Nivel 1 (maximo), saldran todos los warnings</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumWarningLevel.LEVEL_2">
+            <summary>Nivel 2, saldran todos los warnings registrados para este nivel o inferiores</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumWarningLevel.LEVEL_3">
+            <summary>Nivel 3, saldran todos los warnings registrados para este nivel o inferiores</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumWarningLevel.LEVEL_4">
+            <summary>Nivel 4, saldran todos los warnings registrados para este nivel o inferiores</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.enumWarningLevel.LEVEL_5">
+            <summary>Nivel 5 (minimo), saldran solo los warnings registrados para este nivel</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.s_stores">
+            <summary>
+            variable para guardar el mapeo a nivel de bit de los almacenamientos usados para los logs
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.s_listeners">
+            <summary>
+            Lista para almacenar los listeners de logs
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.s_logPath">
+            <summary>
+            Variable con la ruta al directorio donde sera registrado el log
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.s_logFileName">
+            <summary>
+            Variable con el nombre del archivo donde sera registrado el log
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Log.s_warningLevel">
+            <summary>
+            variable para guardar el nivel de warning usado para el registro en el log
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.#cctor">
+            <summary>
+            Constructor estatico de la clase para inicializar el helper
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Log.LogPath">
+            <summary>
+            Propiedad para obtener o establecer el directorio donde seran registrados los logs.
+            NOTA: la ruta debe tener permisos suficientes.
+            </summary>
+            <remarks>La ruta debe tener permisos suficientes.</remarks>
+        </member>
+        <member name="P:Toolkit.Helpers.Log.LogFileName">
+            <summary>
+            Propiedad para obtener o establecer el nombre del archivo donde seran registrados los logs.
+            Si el nombre es null, sera establecido el nombre por defecto con la fecha del dia.
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.attachListener(System.Action{System.String})">
+            <summary>
+            Funcion para asociar un listener en el registro de logs.
+            Mediante el listener se podra tener acceso al registro de logs
+            NOTA: el listener se debe registrar a nivel de aplicacion, y cuando no se use se debe desregistrar para evitar memory leaks.
+            OJO al usarlo en peticiones web, debe desregistrarse antes de perder el contexto HTTP o se creara una fuga de memoria
+            </summary>
+            <param name="_listener">Listener a asociar. El listener sera ejecutado cada vez que se registre un log, con la cadena a registrar</param>
+            <remarks>
+            NOTA: el listener se debe registrar a nivel de aplicacion, y cuando no se use se debe desregistrar para evitar memory leaks.
+            OJO al usarlo en peticiones web, debe desregistrarse antes de perder el contexto HTTP o se creara una fuga de memoria
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.dettachListener(System.Action{System.String})">
+            <summary>
+            Funcion para desasociar un listener del registro de logs.
+            </summary>
+            <param name="_listener">Listener a desasociar</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema
+            NOTA: esta funcion registra un Log con una entrada de informacion, para otros tipos de entradas, ver funciones sobrecargadas
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,Toolkit.Helpers.Log.enumWarningLevel)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema
+            NOTA: esta funcion registra un Log con una entrada de informacion, para otros tipos de entradas, ver funciones sobrecargadas
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_warningLevel">Nivel de warning para registrar en el log, la configuracion permite filtrar niveles de warnings (1 maximo, 5 minimo)</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.Diagnostics.EventLogEntryType)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema del tipo especificado
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_entryType">tipo de entrada en el log (error, warning, etc.). Por defecto es informacion</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.Diagnostics.EventLogEntryType,Toolkit.Helpers.Log.enumWarningLevel)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema del tipo especificado
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_entryType">tipo de entrada en el log (error, warning, etc.). Por defecto es informacion</param>
+            <param name="_warningLevel">Nivel de warning para registrar en el log, la configuracion permite filtrar niveles de warnings (1 maximo, 5 minimo)</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.Type,System.String)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema de tipo informacion registrando el nombre de clase y metodo
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_type">Clase que sera registrada en el log, null si no se quiere establecer</param>
+            <param name="_method">Metodo que sera registrado en el log, null o cadena vacia si no se quiere establecer</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.Type,System.String,Toolkit.Helpers.Log.enumWarningLevel)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema de tipo informacion registrando el nombre de clase y metodo
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_type">Clase que sera registrada en el log, null si no se quiere establecer</param>
+            <param name="_method">Metodo que sera registrado en el log, null o cadena vacia si no se quiere establecer</param>
+            <param name="_warningLevel">Nivel de warning para registrar en el log, la configuracion permite filtrar niveles de warnings (1 maximo, 5 minimo)</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.Diagnostics.EventLogEntryType,System.Type,System.String)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema con nombre de clase y metodo
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_entryType">tipo de entrada en el log (error, warning, etc.)</param>
+            <param name="_type">Clase que sera registrada en el log, null si no se quiere establecer</param>
+            <param name="_method">Metodo que sera registrado en el log, null o cadena vacia si no se quiere establecer</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.Diagnostics.EventLogEntryType,System.Type,System.String,Toolkit.Helpers.Log.enumWarningLevel)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema con nombre de clase y metodo
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_entryType">tipo de entrada en el log (error, warning, etc.)</param>
+            <param name="_type">Clase que sera registrada en el log, null si no se quiere establecer</param>
+            <param name="_method">Metodo que sera registrado en el log, null o cadena vacia si no se quiere establecer</param>
+            <param name="_warningLevel">Nivel de warning para registrar en el log, la configuracion permite filtrar niveles de warnings (1 maximo, 5 minimo)</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.registerLog(System.String,System.String,System.Diagnostics.EventLogEntryType,System.Type,System.String,Toolkit.Helpers.Log.enumWarningLevel)">
+            <summary>
+            Metodo extensor para registrar un log en el sistema con nombre de archivo, clase y metodo
+            </summary>
+            <param name="_log">referencia a la cadena del log a registrar</param>
+            <param name="_filename">
+            Nombre o ruta\Nombre del archivo de texto en el que sera registrado el log.
+            Si esta vacio o es nulo, se establecera el nombre por defecto 'Log_{0}.log' donde {0} es la fecha en formato 'MMyyy'
+            La ruta relativa sera establecida bajo un directorio llamado 'Log' en el directorio del binario deel ensamblado actual
+            NOTA: en un sitio/Aplicacion web, modificar un archivo en el directorio 'bin' causa el refresco del sitio y se perderan sesiones
+            NOTA: la extension es indiferente (en un sistema basado en windows solo sirve para asociar el programa con el cual se ejecuta el archivo)
+            </param>
+            <param name="_entryType">tipo de entrada en el log (error, warning, etc.)</param>
+            <param name="_type">Clase que sera registrada en el log, null si no se quiere establecer</param>
+            <param name="_method">Metodo que sera registrado en el log, null o cadena vacia si no se quiere establecer</param>
+            <param name="_warningLevel">Nivel de warning para registrar en el log, la configuracion permite filtrar niveles de warnings (1 maximo, 5 minimo)</param>
+            <example>
+            formatos para el parametro _filename:
+            
+            .\archivo.log -> se crea un archivo relativo  '.\Log\archivo.log' en el directorio relativo
+            archivo.txt -> se crea un archivo relativo  '.\Log\archivo.txt' en el directorio relativo        
+            .\errors\archivo.log -> se crea un archivo relativo  '.\Log\errors\archivo.log' en el directorio relativo
+            errors\archivo.log -> se crea un archivo relativo  '.\Log\errors\archivo.log' en el directorio relativo
+            c:\\temp\\archivo.txt -> se crea un archivo en 'c:\\temp\\archivo.txt' en el directorio absoluto
+            \\temp\archivo.log -> se crea un archivo en  '\\Log\archivo.txt' en el directorio absoluto
+            </example>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.showInDebugger(System.String)">
+            <summary>
+            funcion para mostrar un log en el depurador del entorno de desarrollo
+            NOTA: esta funcion solo genera el codigo en modo de depuracion, en otros modos no hace nada.  
+            </summary>
+            <param name="_log">referencia a la cadena con el log</param>
+            <remarks>
+            el atributo 'DebuggerStepThrough' se establece para que no pare en un breakpoint dentro de
+            esta funcion, si se desea que se pare hay que comentar el atributo.
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.writeFile(System.String,System.String)">
+            <summary>
+            funcion para escribir el log en una entrada en un archivo de texto con nombre especificado
+            </summary>
+            <param name="_log">referencia a la cadena con el log</param>
+            <param name="_filename">
+            Nombre o ruta\Nombre del archivo de texto en el que sera registrado el log.
+            Si esta vacio o es nulo, se establecera el nombre por defecto 'Log_{0}.log' donde {0} es la fecha en formato 'MMyyy'
+            La ruta relativa sera establecida bajo un directorio llamado 'Log' en el directorio raiz del sitio actual, 
+            o directorio del ejecutable(en caso de no ser una aplicacion web)
+            NOTA: en un sitio/Aplicacion web, modificar un archivo en el directorio 'bin' causa el refresco del sitio y se perderan sesiones
+            NOTA: la extension es indiferente (en un sistema basado en windows solo sirve para asociar el programa con el cual se ejecuta el archivo)
+            </param>
+            <example>
+            formatos para el parametro _filename:
+            
+            .\archivo.log -> se crea un archivo relativo  '.\Log\archivo.log' en el directorio relativo
+            archivo.txt -> se crea un archivo relativo  '.\Log\archivo.txt' en el directorio relativo        
+            .\errors\archivo.log -> se crea un archivo relativo  '.\Log\errors\archivo.log' en el directorio relativo
+            errors\archivo.log -> se crea un archivo relativo  '.\Log\errors\archivo.log' en el directorio relativo
+            c:\\temp\\archivo.txt -> se crea un archivo en 'c:\\temp\\archivo.txt' en el directorio absoluto
+            \\temp\archivo.log -> se crea un archivo en  '\\Log\archivo.txt' en el directorio absoluto
+            </example>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.writeEvtLogEntry(System.String,System.Diagnostics.EventLogEntryType)">
+            <summary>
+            funcion para escribir la cadena en una entrada en el log de eventos de windows guardando
+            </summary>
+            <param name="_log">referencia al objeto de la excepcion</param>
+            <param name="_entryType">tipo de entrada en el log (error, warning, etc.). Por defecto es informacion</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Log.getLogStringFormat(System.String,System.Diagnostics.EventLogEntryType,System.Type,System.String)">
+            <summary>
+            Funcion para obtener una cadena formateada con el registro de log
+            </summary>
+            <param name="_log">cadena con la informacion a registrar en el log</param>
+            <param name="_logType">Tipo de log a registrar</param>
+            <param name="_type">Clase que sera registrada en el log, null si no se quiere establecer</param>
+            <param name="_method">Metodo que sera registrado en el log, null o cadena vacia si no se quiere establecer</param>
+            <returns>cadena con el registro de log formateado</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Exceptions">
+            <summary>
+            Clase de ayuda con funcionalidades comunes para trabajar con excepciones
+            
+            NOTA: esta clase hace uso del helper de registro de logs para mas informacion sobre la configuracion de logs <see cref="T:Toolkit.Helpers.Log"/>.
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Exceptions.registerException``1(System.Exception,System.String)">
+            <summary>
+            Metodo extensor para registrar una excepcion en el sistema, mediante este metodo se dispone de un unico
+            sistema de registro de excepciones para toda la aplicacion
+            </summary>
+            <typeparam name="T">Clase desde la cual se genera la excepcion</typeparam>
+            <param name="_exception">referencia al objeto de la excepcion</param>
+            <param name="_infoEx">Informacion extra a escribir en la excepcion al inicio.</param>
+        </member>
+        <member name="M:Toolkit.Helpers.Exceptions.getExceptionStringFormat(System.Exception,System.String)">
+            <summary>
+            Funcion para obtener una cadena formateada con la excepcion especificada
+            </summary>
+            <param name="_obj">referencia al objeto de la excepcion</param>
+            <param name="_infoEx">Informacion extra a escribir en el log al inicio.</param>
+            <returns>cadena con la excepcion formateada</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Exceptions._getExceptionStringFormat(System.Exception,System.String)">
+            <summary>
+            Funcion para obtener una cadena formateada con la excepcion especificada
+            </summary>
+            <param name="_obj">referencia al objeto de la excepcion</param>
+            <param name="_infoEx">Informacion extra a escribir en el log al inicio.</param>
+            <returns>cadena con la excepcion formateada</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Exceptions._getReflectionTypeLoadException(System.Reflection.ReflectionTypeLoadException)">
+            <summary>
+            Funcion para obtener la cadena con los errores de una excepcion de carga de tipos
+            </summary>
+            <param name="_exception">_excepcion de carga de tipos</param>
+            <returns>Cadena con el error de carga de tipos</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.FileSystem">
+            <summary>
+            Clase de ayuda con funcionalidades comunes para trabajar con entrada y salida en archivos   
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.FileSystem.m_writeFileLock">
+            <summary>
+            variable para bloqueo multihilo en escritura fichero
+            </summary>        
+        </member>
+        <member name="M:Toolkit.Helpers.FileSystem.writeFile(System.String,System.String,System.Boolean)">
+            <summary>
+            Funcion para escribir en un archivo de texto. Si el archivo no existe, se creara.
+            </summary>
+            <param name="_fileName">ruta y nombre del archivo donde se escribira</param>
+            <param name="_text">Texto a escribir en el archivo</param>
+            <param name="_append">
+            true para indicar que el texto sera añadido al archivo, 
+            false para indicar que se escriba en el archivo borrando previamente el contenido
+            </param>
+        </member>
+        <member name="T:Toolkit.Helpers.Attributes">
+            <summary>
+            Clase con funcionalidades para interacturar con atributos de una clase mediante reflexion.
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Attributes.PropertiesAttributes``2">
+            <summary>
+            Funcion para obtener la interface a un diccionario con las propiedades mapeadas a los objetos del atributo especificados por el tipo 
+            generico de entrada para una Clase
+            NOTA: Esta funcion solo busca atributos en las propiedades de una clase
+            </summary>        
+            <typeparam name="TModel">la clase (tipo en c#) del modelo conteniendo las propiedades a buscar</typeparam>
+            <typeparam name="TAttribute">
+            La Clase (tipo en c#) del atributo que se desa buscar en las propiedades
+            </typeparam>        
+            <returns>Diccionario con las propiedades y el objeto creado por el atributo asignado a ellas</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Attributes.PropertiesAttributes``1(System.Type)">
+            <summary>
+            Funcion para obtener la interface a un diccionario con las propiedades mapeadas a los objetos del atributo especificados por el parametro de entrada 
+            NOTA: Esta funcion solo busca atributos en las propiedades de una clase
+            </summary>        
+            <typeparam name="TAttribute">
+            La Clase (tipo en c#) del atributo que se desa buscar en las propiedades
+            </typeparam>        
+            <param name="_type">el tipo del objeto conteniendo las propiedades a buscar</param>
+            <returns>Diccionario con las propiedades y el objeto creado por el atributo asignado a ellas</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Attributes.GetAttributeValue``2(System.Enum,System.Func{``0,``1})">
+            <summary>
+            Metodo extensor para acceder a un atributo de un valor de enumeracion mediante una funcion
+            </summary>
+            <typeparam name="T">Tipo de atributo del que se obtendra el valor</typeparam>
+            <typeparam name="TExpected">Tipo del valor esperado en el resultado</typeparam>
+            <param name="_object">objeto en el cual se buscara el atributo</param>
+            <param name="_expression">Expresion a realizar sobre el atributo buscado</param>
+            <returns>Valor establecido por la funcion del parametro '_expression' con el tipo 'Expected'</returns>
+            <remarks>solo es valido para atributos unicos (no valen multiples atributos del mismo tipo)</remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Attributes.GetMetadataPropertyAttribute``1(System.Reflection.PropertyInfo)">
+            <summary>
+            Funcion para obtener los atributos especificados de los tipos asociados con metadatos que extienden los atributos de una clase. 
+            (suelen ser usados en servicios web, ORMs para añadir atributos a propiedades que son generadas por plantillas T4)
+            </summary>
+            <param name="_propertyInfo">propiedad de la cual se quiere obtener los atributos especificados desde las clases asociadas con metadatos</param>
+            <returns>Enumeracion de atributos encontrados en las clases asociadas con metadatos, si no se encuentra, se retornara una enumeracion vacia</returns>        
+        </member>
+        <member name="M:Toolkit.Helpers.Attributes.GetAttributeInstance``1(System.Object)">
+            <summary>
+            Metodo extensor para obtener la instancia de un atributo de un objeto
+            </summary>
+            <typeparam name="TAttribute">Tipo del atributo a obtener</typeparam>
+            <param name="_object">Instancia del objeto del cual se quiere obtener la instancia del atributo</param>
+            <returns>Instancia del atributo especificado por la plantilla para el objeto establecido, null en caso de no existir</returns>
+            <remarks>
+            Este metodo extensor solo obtiene la instancia del primer atributo encontrado.
+            </remarks>
+        </member>
+        <member name="T:Toolkit.Helpers.FieldNameAttribute">
+            <summary>
+            Clase para definir un atributo generico que puede ser usado para disponer de un nombre (independiente del lenguaje) para la propiedad,
+            de este modo se puede usar el nombre de este atributo por ejemplo para asociar la propiedad a parametros en urls, campos en filas, tablas, etc.
+            
+            NOTA: solo esta disponible para propiedades
+            
+            ej: [FieldNameAttribute( "mi campo" )]
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.FieldNameAttribute.m_fieldName">
+            <summary>Variable para guardar el nombre alternativo del campo</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.FieldNameAttribute.#ctor(System.String)">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>
+            <param name="fieldName">nombre (independiente del lenguaje) para la propiedad</param>
+        </member>
+        <member name="P:Toolkit.Helpers.FieldNameAttribute.FieldName">
+            <summary>Propiedad para obtener el nombre (independiente del lenguaje) para la propiedad</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.OrderAttribute">
+            <summary>
+            Clase para definir un atributo generico que puede ser usado para establecer un orden en una propiedad/campo, que puede ser usado por ejemplo
+            para ordenar propiedades/campos mediante reflexion
+            ej: [OrderAttribute( 1 )]
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.OrderAttribute.m_order">
+            <summary>Variable para guardar el orden del campo</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.OrderAttribute.#ctor(System.Int32)">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>
+            <param name="order">orden para la propiedad</param>
+        </member>
+        <member name="P:Toolkit.Helpers.OrderAttribute.Order">
+            <summary>Propiedad para obtener el orden de la propiedad</summary>
+        </member>
+        <member name="T:Toolkit.Helpers.HiddenAttribute">
+            <summary>
+            Clase para definir un atributo generico que puede ser usado para ocultar una propiedad/campo, en operaciones de reflexion
+            ej: [HiddenAttribute()]
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.HiddenAttribute.#ctor">
+            <summary>
+            Constructor por defecto de la clase
+            </summary>
+            <param name="order">orden para la propiedad</param>
+        </member>
+        <member name="T:Toolkit.Helpers.Objects">
+            <summary>
+            Clase con funcionalidades varias para interacturar con miembros de objetos
+            </summary>
+        </member>
+        <member name="T:Toolkit.Helpers.Objects.enumDirection">
+            <summary>
+            Enumeracion para indicar una direccion en la obtencion de items
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Objects.enumDirection.NEXT">
+            <summary>Siguiente elemento</summary>
+        </member>
+        <member name="F:Toolkit.Helpers.Objects.enumDirection.PREVIOUS">
+            <summary>Anterior elemento</summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.Next``1(``0,System.Boolean)">
+            <summary>
+            Metodo extensor para obtener el siguiente elemento de una enumeracion
+            </summary>
+            <typeparam name="T">Tipo de enumeracion</typeparam>
+            <param name="_item">item de la enumeracion del cual se obtendra el siguiente</param>
+            <param name="_cyclicMode">Flag indicando si se esta en modo ciclico o no</param>
+            <returns>
+            siguiente elemento de la enumeracion, si '_cyclicMode' es true y es el ultimo elemento, se retornara el primero,
+            en caso contrario se retornara el mismo elemento (ultimo de la enumeracion)
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.Previous``1(``0,System.Boolean)">
+            <summary>
+            Metodo extensor para obtener el anterior elemento de una enumeracion
+            </summary>
+            <typeparam name="T">Tipo de enumeracion</typeparam>
+            <param name="_item">item de la enumeracion del cual se obtendra el anterior</param>
+            <param name="_cyclicMode">Flag indicando si se esta en modo ciclico o no</param>
+            <returns>
+            anterior elemento de la enumeracion, si '_cyclicMode' es true y es el primer elemento, se retornara el ultimo,
+            en caso contrario se retornara el mismo elemento (primero de la enumeracion)
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.XmlSerialize(System.Object)">
+            <summary>
+            helper para serializar un objeto en un XML
+            </summary>
+            <param name="_objectToSerialize">objeto a serializar</param>
+            <returns>cadena con el XML del objeto serializado, null en caso de no poderse serializar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.XmlSerialize(System.Object,System.Xml.XmlWriterSettings,System.Xml.Serialization.XmlSerializerNamespaces)">
+            <summary>
+            helper para serializar un objeto en un XML
+            </summary>
+            <param name="_objectToSerialize">objeto a serializar</param>
+            <param name="_settings">Configuracion con las opciones para la generacion del XML</param>
+            <param name="_namespaces">Nombres de espacios al que hace referencia el objeto (opcional)</param>
+            <returns>cadena con el XML del objeto serializado, null en caso de no poderse serializar</returns>
+            <remarks>se pueden eliminar los namespaces del resultado si se añade un 'XmlSerializerNamespaces' con .Add("", ""); </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.XmlDeserialize``1(System.String)">
+            <summary>
+            helper para deserializar un XML en un objeto
+            </summary>
+            <typeparam name="T">Tipo del objeto sobre el que sera deserializado el XML</typeparam>
+            <param name="_xml">xml conteniendo la serializacion del objeto</param>
+            <returns>Objeto deserializado, null si no se ha podido deserializar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.XmlDeserialize(System.Type,System.String)">
+            <summary>
+            helper para deserializar un XML en un objeto
+            </summary>
+            <param name="_objectType">Tipo de objeto a deserializar</param>
+            <param name="_xml">xml conteniendo la serializacion del objeto</param>
+            <returns>Objeto deserializado, null si no se ha podido deserializar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.XmlDeserialize``1(System.String,System.Xml.XmlReaderSettings)">
+            <summary>
+            helper para deserializar un XML en un objeto
+            </summary>
+            <typeparam name="T">Tipo del objeto sobre el que sera deserializado el XML</typeparam>
+            <param name="_xml">xml conteniendo la serializacion del objeto</param>
+            <param name="_settings">Configuracion con las opciones para la lectura del XML</param>
+            <returns>Objeto deserializado, null si no se ha podido deserializar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.XmlDeserialize(System.Type,System.String,System.Xml.XmlReaderSettings)">
+            <summary>
+            helper para deserializar un XML en un objeto
+            </summary>
+            <param name="_objectType">Tipo de objeto a deserializar</param>
+            <param name="_xml">xml conteniendo la serializacion del objeto</param>
+            <param name="_settings">Configuracion con las opciones para la lectura del XML</param>
+            <returns>Objeto deserializado, null si no se ha podido deserializar</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.CompareObject(System.Object,System.Object)">
+            <summary>
+            Compara dos objetos para ver si son iguales sus propiedades.
+            NOTA: no seran comparadas propiedades que contengan una COLECCION GENERICA, para ello debera usarse la funcion <see cref="M:Toolkit.Helpers.Objects.CompareCollection``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})"/>.
+            NOTA2: este metodo suele ser usado en pruebas ya que es posible que algun tipo no se compare correctamente.
+            </summary>
+            <param name="_a">Objeto a comparar</param>
+            <param name="_b">Objeto a comparar</param>
+            <returns>True si son iguales, False en caso contrario</returns>
+            <remarks>
+            No seran comparadas propiedades que contengan una coleccion, para ello debera usarse la funcion <see cref="M:Toolkit.Helpers.Objects.CompareCollection``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})"/>.
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.CompareCollection``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Compara dos colecciones de objetos (SOLO los objetos internos, no se comparan los tipos de las colecciones)
+            NOTA: Si los objetos de la coleccion tienen propiedades con algun tipo no primitivo, SOLO sera verificado su tipo y podra no ser el mismo objeto.
+            </summary>
+            <param name="_a">Enumeracion a comparar</param>
+            <param name="_b">Enumeracion a comparar</param>
+            <returns>True si son iguales, False en caso contrario</returns>
+            <remarks>
+            Si los objetos de la coleccion tienen propiedades con algun tipo no primitivo, SOLO sera verificado su tipo y podra no ser el mismo objeto.
+            </remarks>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+            Funcion de ayuda para obtener el nombre de una propiedad fuertemente tipada mediante una expresion lambda
+            </summary>
+            <typeparam name="T">Tipo de la propiedad</typeparam>
+            <param name="_expression"></param>
+            <returns>Nombre de la propiedad fuertemente tipada especificada en la expresion lambda</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.TryChangeType(System.Object,System.Type,System.Object@)">
+            <summary>
+            Funcion para intentar convertir un objeto al tipo especificado y con su valor equivalente.
+            En caso
+            </summary>
+            <param name="_value"></param>
+            <param name="_conversionType"></param>
+            <param name="_result">Objeto con el resultado del cambio de tipo, null en caso de no poder realizarse la conversion</param>
+            <returns>
+            True en caso de poder realizarse la conversion, false en caso contrario.
+            </returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Objects.getEnumItem``1(``0,Toolkit.Helpers.Objects.enumDirection,System.Boolean)">
+            <summary>
+            Funcion para obtener un item secuencial de una enumeracion, dependiendo de la direccion especificada
+            </summary>
+            <typeparam name="T">Tipo de enumeracion usada</typeparam>
+            <param name="_item">item actual</param>
+            <param name="_direction">direccion del item secuencial a obtener</param>
+            <param name="_cyclicMode">Flag indicando si se esta en modo ciclico o no</param>
+            <returns>
+            elemento de la enumeracion anterior/siguiente dependiendo de la direccion,
+            si '_cyclicMode' es true y el elemento ha llegado al limite correspondiente, retornara el primer/ultimo elemento,
+            en caso contrario, retornara el mismo elemento
+            </returns>
+        </member>
+        <member name="T:Toolkit.Helpers.Validators">
+            <summary>
+            Clase de ayuda con funcionalidades comunes para trabajar con validaciones de objetos
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.Validators.TryValidate(System.Object,System.Collections.Generic.ICollection{System.ComponentModel.DataAnnotations.ValidationResult}@)">
+            <summary>
+            Funcion para validar un modelo conteniendo atributos que definen metadatos de validacion del namespace 
+            'System.ComponentModel.DataAnnotations'        
+            </summary>
+            <param name="_model">modelo a validar</param>
+            <param name="_results">resultados de la validacion del modelo (No hay que inicializarla)</param>
+            <returns>true si el modelo es valido, false en caso contrario</returns>
+        </member>
+        <member name="M:Toolkit.Helpers.Validators.TryValidate(System.Object)">
+            <summary>
+            Funcion para validar un modelo conteniendo atributos que definen metadatos de validacion del namespace 
+            'System.ComponentModel.DataAnnotations'
+            </summary>
+            <param name="_model">modelo a validar</param>
+            <returns>true si el modelo es valido, false en caso contrario</returns>
+        </member>
+        <member name="T:Toolkit.Helpers.WinEvtLog">
+            <summary>
+            Clase de ayuda con funcionalidades comunes para trabajar con el EventLog de Windows.    
+            
+            CONFIGURACION: se debe añadir las entradas 'WinEvtSourceName' y 'WinEvtLogName' en el archivo de configuracion de cada aplicacion 
+                que haga uso de este sistema, conteniendo el nombre de la fuente y log respectivamente donde seran registrados las entradas 
+                en el visor de eventos de windows .
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.WinEvtLog.EventLog">
+            <summary>
+            Variable para contener el objeto que trabaja con el visor de sucesos de windows para registrar un log
+            </summary>
+        </member>
+        <member name="F:Toolkit.Helpers.WinEvtLog.IsLogCreated">
+            <summary>
+            Variable con un flag indicando si esta creado el log para registrar eventos.        
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.WinEvtLog.#cctor">
+            <summary>
+            Constructor estatico de la clase
+            </summary>
+        </member>
+        <member name="M:Toolkit.Helpers.WinEvtLog.writeEvtLogEntry(System.String,System.Diagnostics.EventLogEntryType)">
+            <summary>
+            Funcion para escribir una entrada personalizada en el log de eventos de windows.   
+            </summary>
+            <param name="_message">mensaje a mostrar en el visor de sucesos</param>
+            /// <param name="_entryType">tipo de entrada en el log (error, warning, etc.)</param>
+        </member>
+        <member name="T:Toolkit.Helpers.Resources.ResxResources">
+            <summary>
+              Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Resources.ResxResources.ResourceManager">
+            <summary>
+              Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
+            </summary>
+        </member>
+        <member name="P:Toolkit.Helpers.Resources.ResxResources.Culture">
+            <summary>
+              Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+              búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
+            </summary>
+        </member>
+    </members>
+</doc>
